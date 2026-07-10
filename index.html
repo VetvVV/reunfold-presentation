@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReUnfold-Square</title>
+<style>
+:root{
+  --bg:#0a1622; --bg2:#0f2136; --bg3:#123049;
+  --panel:rgba(255,255,255,.045);
+  --panel-brd:rgba(120,170,220,.18);
+  --accent:#4ea3ff; --accent2:#79d0ff; --gold:#ffcf6b;
+  --ok:#4fd18b; --warn:#ffb454; --cond:#8aa0b8; --empty:#e5789b;
+  --txt:#eaf2fb; --muted:#9db2c9;
+  --shadow:0 20px 60px rgba(0,0,0,.5);
+  --font:'Segoe UI',system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --mono:'Consolas','SF Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:var(--font); color:var(--txt); overflow:hidden;
+  background:
+    radial-gradient(1100px 760px at 82% -8%, rgba(78,163,255,.20), transparent 58%),
+    radial-gradient(820px 620px at -5% 108%, rgba(121,208,255,.12), transparent 55%),
+    linear-gradient(155deg,var(--bg),var(--bg2) 55%,var(--bg3));
+}
+#bgfx{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+#bgfx b{position:absolute;border-radius:50%;filter:blur(70px);opacity:.5;
+  background:radial-gradient(circle at 30% 30%,var(--accent),transparent 70%);animation:drift 22s ease-in-out infinite}
+#bgfx b:nth-child(1){width:520px;height:520px;top:-120px;right:-80px}
+#bgfx b:nth-child(2){width:440px;height:440px;bottom:-160px;left:-100px;
+  background:radial-gradient(circle at 30% 30%,#2f7fd6,transparent 70%);animation-duration:28s;animation-delay:-6s}
+#bgfx b:nth-child(3){width:320px;height:320px;top:40%;left:55%;opacity:.22;
+  background:radial-gradient(circle at 30% 30%,var(--accent2),transparent 70%);animation-duration:32s;animation-delay:-12s}
+@keyframes drift{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(60px,-40px) scale(1.08)}66%{transform:translate(-40px,50px) scale(.95)}}
+#grid{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.05;
+  background-image:linear-gradient(var(--accent) 1px,transparent 1px),linear-gradient(90deg,var(--accent) 1px,transparent 1px);
+  background-size:52px 52px;mask-image:radial-gradient(ellipse at center,#000 40%,transparent 85%)}
+
+#deck{position:fixed;inset:0;z-index:1}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;
+  padding:6vh 6vw 9vh;opacity:0;visibility:hidden;transform:translateY(22px) scale(.986);
+  transition:opacity .55s ease, transform .55s ease, visibility .55s;overflow:auto}
+.slide.active{opacity:1;visibility:visible;transform:none;z-index:2}
+.slide.active .reveal{animation:rise .65s cubic-bezier(.2,.7,.2,1) both}
+.slide.active .reveal:nth-child(1){animation-delay:.04s}
+.slide.active .reveal:nth-child(2){animation-delay:.12s}
+.slide.active .reveal:nth-child(3){animation-delay:.20s}
+.slide.active .reveal:nth-child(4){animation-delay:.28s}
+.slide.active .reveal:nth-child(5){animation-delay:.36s}
+.slide.active .reveal:nth-child(6){animation-delay:.44s}
+@keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+
+h1,h2,h3{line-height:1.1;font-weight:700}
+.kicker{color:var(--accent2);letter-spacing:.22em;text-transform:uppercase;font-size:clamp(11px,1.05vw,14px);font-weight:600;margin-bottom:12px}
+.slide h2{font-size:clamp(25px,3.8vw,50px);margin-bottom:10px;background:linear-gradient(90deg,#fff,#bcd2e8);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{font-size:clamp(15px,1.6vw,21px);color:var(--muted);max-width:60ch;line-height:1.5}
+.slide p{line-height:1.5}
+.mono{font-family:var(--mono)}
+
+.title-wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:4vw;align-items:center;height:100%}
+.brand{font-size:clamp(42px,7.2vw,104px);font-weight:800;letter-spacing:-.02em;line-height:.96}
+.brand .sq{color:var(--accent);text-shadow:0 0 40px rgba(78,163,255,.4)}
+.title-sub{margin-top:16px;font-size:clamp(17px,1.9vw,27px);color:var(--gold);font-weight:600}
+.title-tag{margin-top:10px;font-size:clamp(13px,1.35vw,17px);color:var(--muted)}
+.title-badges{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
+.tb{background:var(--panel);border:1px solid var(--panel-brd);border-radius:999px;padding:8px 15px;font-size:clamp(12px,1.2vw,15px);color:var(--txt)}
+.tb b{color:var(--accent2)}
+.hero-img{border-radius:22px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--panel-brd);background:#0a1420;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;position:relative}
+.hero-img img{width:100%;height:100%;object-fit:cover}
+.hero-img::after{content:"";position:absolute;inset:0;box-shadow:inset 0 0 120px rgba(0,0,0,.35)}
+.float{animation:float 6s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+
+.two{display:grid;grid-template-columns:1fr 1fr;gap:3vw;align-items:center;height:100%}
+.imgcard{border-radius:18px;overflow:hidden;border:1px solid var(--panel-brd);box-shadow:var(--shadow);background:#0a1420}
+.imgcard img{width:100%;display:block}
+.imgcard.contain{background:#0e1c2c;display:flex;align-items:center;justify-content:center}
+.imgcard.contain img{object-fit:contain;max-height:78vh}
+
+.cards{display:grid;gap:16px;margin-top:10px}
+.card{background:var(--panel);border:1px solid var(--panel-brd);border-radius:16px;padding:20px 22px;backdrop-filter:blur(6px)}
+.card h3{font-size:clamp(16px,1.55vw,21px);margin-bottom:6px;color:#fff}
+.card p{color:var(--muted);font-size:clamp(13px,1.2vw,16px)}
+.card .ic{font-size:24px;margin-bottom:8px;display:block}
+
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:12px}
+.stat{background:var(--panel);border:1px solid var(--panel-brd);border-radius:18px;padding:24px 16px;text-align:center;position:relative;overflow:hidden}
+.stat::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent)}
+.stat .num{font-size:clamp(28px,4.2vw,54px);font-weight:800;background:linear-gradient(90deg,var(--accent2),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat .lbl{color:var(--muted);margin-top:6px;font-size:clamp(12px,1.1vw,15px)}
+
+.bar-wrap{margin-top:22px;max-width:820px}
+.bar-row{display:flex;justify-content:space-between;color:var(--muted);font-size:14px;margin-bottom:8px}
+.bar{height:26px;border-radius:13px;background:rgba(255,255,255,.06);overflow:hidden;border:1px solid var(--panel-brd);display:flex}
+.bar > span{display:block;height:100%;width:0;transition:width 1.3s cubic-bezier(.2,.7,.2,1)}
+.slide.active .bar .seg1{width:var(--w1);background:linear-gradient(90deg,#3f8fe0,#4ea3ff)}
+.slide.active .bar .seg2{width:var(--w2);background:repeating-linear-gradient(45deg,#ffb454,#ffb454 6px,#e6a34c 6px,#e6a34c 12px)}
+.legend{display:flex;gap:18px;margin-top:12px;flex-wrap:wrap;color:var(--muted);font-size:13px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+
+.catalog-full{border-radius:18px;overflow:hidden;border:1px solid var(--panel-brd);box-shadow:var(--shadow);max-height:80vh;display:flex;justify-content:center;background:#0e1c2c}
+.catalog-full img{width:auto;max-width:100%;max-height:80vh;display:block}
+
+.method{display:grid;grid-template-columns:1fr 1fr;gap:3vw;align-items:center;height:100%}
+.formula-box{background:rgba(10,20,32,.6);border:1px solid var(--panel-brd);border-radius:14px;padding:18px 20px;margin-top:16px;font-family:var(--mono);font-size:clamp(13px,1.35vw,17px);color:var(--accent2);line-height:1.7}
+.formula-box .lbl{color:var(--muted);font-family:var(--font);font-size:13px;display:block;margin-bottom:4px}
+
+.two-layer{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:16px}
+.layer{background:var(--panel);border:1px solid var(--panel-brd);border-radius:16px;padding:22px}
+.layer .tag{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 12px;border-radius:999px;margin-bottom:12px}
+.layer.clean .tag{background:rgba(78,163,255,.16);color:var(--accent2);border:1px solid rgba(78,163,255,.35)}
+.layer.full .tag{background:rgba(255,207,107,.16);color:var(--gold);border:1px solid rgba(255,207,107,.4)}
+.layer h3{color:#fff;font-size:clamp(17px,1.7vw,23px);margin-bottom:8px}
+.layer p{color:var(--muted);font-size:clamp(13px,1.15vw,15px);line-height:1.5}
+.layer .val{color:var(--ok);font-weight:700;margin-top:10px;font-size:15px;font-family:var(--mono)}
+.layer ul{list-style:none;margin-top:10px}
+.layer ul li{color:var(--muted);font-size:13px;padding:4px 0 4px 18px;position:relative;font-family:var(--mono)}
+.layer ul li::before{content:"+";position:absolute;left:0;color:var(--gold);font-weight:700}
+
+.acc-table{width:100%;border-collapse:collapse;margin-top:12px;font-size:clamp(12px,1.15vw,15px)}
+.acc-table th,.acc-table td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--panel-brd)}
+.acc-table th{color:var(--accent2);font-weight:600;letter-spacing:.03em}
+.acc-table td .code{color:var(--accent2);font-weight:700;font-family:var(--mono)}
+.acc-table .dev{color:var(--ok);font-weight:700;font-family:var(--mono)}
+.badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:600}
+.badge.ok{background:rgba(79,209,139,.16);color:var(--ok);border:1px solid rgba(79,209,139,.35)}
+.badge.part{background:rgba(255,180,84,.16);color:var(--warn);border:1px solid rgba(255,180,84,.35)}
+.badge.cond{background:rgba(138,160,184,.16);color:var(--cond);border:1px solid rgba(138,160,184,.35)}
+
+ul.check{list-style:none;margin-top:12px}
+ul.check li{padding:8px 0 8px 32px;position:relative;color:var(--txt);font-size:clamp(14px,1.35vw,18px);line-height:1.4}
+ul.check li::before{content:"✓";position:absolute;left:0;top:7px;color:var(--ok);font-weight:800;background:rgba(79,209,139,.14);width:23px;height:23px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;border:1px solid rgba(79,209,139,.35)}
+
+.reg-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:12px}
+.reg-card{background:var(--panel);border:1px solid var(--panel-brd);border-radius:14px;overflow:hidden;transition:transform .3s,border-color .3s;display:flex;flex-direction:column}
+.reg-card:hover{transform:translateY(-5px);border-color:var(--accent)}
+.reg-ph{aspect-ratio:4/3;background:#e9ecef;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+.reg-ph img{width:100%;height:100%;object-fit:contain;padding:6px}
+.reg-ph.dev{background:repeating-linear-gradient(45deg,#0e1c2c,#0e1c2c 10px,#132638 10px,#132638 20px)}
+.reg-ph.dev span{color:var(--muted);font-size:12px;font-weight:600;text-align:center;padding:8px}
+.reg-body{padding:11px 13px;flex:1;display:flex;flex-direction:column;gap:3px}
+.reg-code{color:var(--accent2);font-size:13px;font-weight:700;font-family:var(--mono)}
+.reg-name{color:var(--txt);font-size:13px;line-height:1.25}
+.reg-formula{color:var(--muted);font-size:11px;font-family:var(--mono);margin-top:2px}
+.reg-status{margin-top:auto;padding-top:6px}
+
+.draft-table-wrap{margin-top:12px;max-height:66vh;overflow-y:auto;border:1px solid var(--panel-brd);border-radius:14px}
+.draft-table{width:100%;border-collapse:collapse;font-size:clamp(11px,1.05vw,14px)}
+.draft-table th{position:sticky;top:0;background:#0f2136;color:var(--accent2);font-weight:600;text-align:left;padding:10px 14px;border-bottom:1px solid var(--panel-brd);z-index:1}
+.draft-table td{padding:8px 14px;border-bottom:1px solid rgba(120,170,220,.08);color:var(--txt)}
+.draft-table tr:hover td{background:rgba(78,163,255,.06)}
+.draft-table .dc{color:var(--accent2);font-family:var(--mono);font-weight:700;white-space:nowrap}
+.draft-table .df{font-family:var(--mono);color:var(--muted);font-size:.92em}
+.draft-table .ds{color:var(--cond);font-size:.9em;white-space:nowrap}
+.draft-table .db{display:inline-block;padding:2px 8px;border-radius:999px;background:rgba(138,160,184,.16);color:var(--cond);border:1px solid rgba(138,160,184,.3);font-size:11px}
+
+.pill-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+.pill{background:var(--panel);border:1px solid var(--panel-brd);border-radius:999px;padding:9px 16px;font-size:clamp(13px,1.25vw,16px);color:var(--txt)}
+.pill b{color:var(--accent2)}
+
+.plan-days{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
+.day{background:var(--panel);border:1px solid var(--panel-brd);border-radius:14px;padding:18px}
+.day .d{color:var(--gold);font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px}
+.day p{color:var(--muted);font-size:14px;line-height:1.45}
+.day.done .d{color:var(--ok)}
+
+.finale{text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%}
+.finale h2{font-size:clamp(30px,5vw,64px)}
+.finale .joke{margin-top:16px;font-size:clamp(18px,2.2vw,30px);color:var(--gold);font-weight:600}
+.finale .sub{margin-top:14px;color:var(--muted);max-width:62ch;font-size:clamp(15px,1.45vw,20px)}
+
+#chrome{position:fixed;inset:0;pointer-events:none;z-index:50}
+.topbar{position:absolute;top:0;left:0;right:0;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;pointer-events:auto}
+.logo-min{font-weight:800;font-size:17px;color:#fff;opacity:.9}
+.logo-min .sq{color:var(--accent)}
+.controls{display:flex;align-items:center;gap:10px}
+.btn{pointer-events:auto;cursor:pointer;user-select:none;border:1px solid var(--panel-brd);background:rgba(255,255,255,.06);color:var(--txt);border-radius:10px;padding:8px 12px;font-size:13px;font-weight:600;transition:.2s;backdrop-filter:blur(6px)}
+.btn:hover{background:rgba(78,163,255,.2);border-color:var(--accent)}
+.btn.active{background:var(--accent);color:#06121f;border-color:var(--accent)}
+.lang{display:flex;border:1px solid var(--panel-brd);border-radius:10px;overflow:hidden}
+.lang span{padding:8px 12px;cursor:pointer;font-size:13px;font-weight:700;color:var(--muted);transition:.2s}
+.lang span.on{background:var(--accent);color:#06121f}
+.nav-arrow{position:absolute;top:50%;transform:translateY(-50%);pointer-events:auto;cursor:pointer;width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.06);border:1px solid var(--panel-brd);color:#fff;font-size:22px;transition:.2s;backdrop-filter:blur(6px)}
+.nav-arrow:hover{background:var(--accent);color:#06121f;border-color:var(--accent)}
+#prev{left:18px}#next{right:18px}
+.dots{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:9px;pointer-events:auto}
+.dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.22);cursor:pointer;transition:.3s}
+.dot.on{background:var(--accent);transform:scale(1.3);box-shadow:0 0 12px var(--accent)}
+.autobar{position:absolute;bottom:0;left:0;height:3px;background:var(--accent);width:0}
+.autobar.run{transition:width linear}
+.counter{position:absolute;bottom:22px;right:24px;color:var(--muted);font-size:13px;pointer-events:auto;font-variant-numeric:tabular-nums}
+
+@media (max-width:920px){
+  .title-wrap,.two,.method,.two-layer{grid-template-columns:1fr;gap:22px}
+  .stats,.reg-grid{grid-template-columns:repeat(2,1fr)}
+  .plan-days{grid-template-columns:1fr}
+  .slide{padding:8vh 5vw 11vh}
+  .hero-img{aspect-ratio:16/11}
+}
+</style>
+</head>
+<body>
+<div id="bgfx"><b></b><b></b><b></b></div>
+<div id="grid"></div>
+<div id="deck"></div>
+<div id="chrome">
+  <div class="topbar">
+    <div class="logo-min">ReUnfold<span class="sq">-Square</span></div>
+    <div class="controls">
+      <div class="btn" id="autoBtn"><span id="autoIc">▶</span> <span data-i18n="auto">Авто</span></div>
+      <div class="lang"><span data-lang="uk" class="on">UA</span><span data-lang="ru">RU</span></div>
+    </div>
+  </div>
+  <div class="nav-arrow" id="prev">‹</div>
+  <div class="nav-arrow" id="next">›</div>
+  <div class="dots" id="dots"></div>
+  <div class="counter" id="counter"></div>
+  <div class="autobar" id="autobar"></div>
+</div>
+<script>
+const IMG='renders/';
+const DRAFT=[["KRG-007","Заглушка кругла","π·D·H/1e6 + π·D²/4/1e6","методичка"],["KRG-008","Врізка кругла","(π·D + S2)·(H+Z)/1e6","методичка"],["KRG-009","Сідло","Sврезка + Sседло","методичка"],["KRG-010","Ніпель круглий","(π·D + S1)·L/1e6","геометрія"],["KRG-011","Шумоглушник круглий","Σ цилиндров + фланцы/ниппели","методичка"],["KRG-012","Парасоля кругла","Sдержатель + Sконус","методичка"],["KRG-013","Дросель круглий","π·D·L/1e6 + Sлопатки","методичка"],["KRG-014","Фланець круглий","π·(Dout²-Din²)/4/1e6","методичка"],["KRG-015","Хрестовина кругла","KRG-005 + доп.врезка","геометрія"],["KRG-016","Качка кругла","как KRG-002 + патрубок","геометрія"],["KRG-017","Зворотний клапан кр.","π·D·L/1e6 + Sлопаток","геометрія"],["KRG-018","Дефлектор","Sпереход + Sцилиндр + Sзонт","табл. Одеса"],["KRG-019","Муфта","(π·D + S1)·L/1e6","геометрія"],["PRM-002","Відвід прямокутний","Σ деталей + S1 замки","СПВА"],["PRM-003","Коліно перех. прям.","PRM-002 + PRM-004","геометрія"],["PRM-004","Перехід прямокутний","Σ панелей + замки","Excel/CAMduct"],["PRM-005","Трійник прямокутний","Sтело + Sврезка","СПВА"],["PRM-006","Хрестовина прям.","PRM-005 + доп.сечение","геометрія"],["PRM-007","Качка прямокутна","Σ панели + замки","СПВА"],["PRM-008","Заглушка прям.","W·H/1e6 + борта","СПВА"],["PRM-009","Врізка прям.","(2·(a+Hв)+15·N)·(Hв+Z)/1e6","СПВА"],["PRM-010","Повітровід з врізкою","Sосн − ΣSотв + ΣSврезки","геометрія"],["PRM-011","Шумоглушник прям.","Sкорпус + элементы","геометрія"],["PRM-012","Парасоля прям.","Sстойка + Sзонт","СПВА"],["PRM-013","Дросель прямий","2·(W+H)·L/1e6 + Sлопатки","геометрія"],["KMB-001","Перехід круг-прямок.","Σ панелей + обечайка + замки","Excel/CAMduct"],["KMB-002","Сідло з прям. врізкою","Sкругл.тело + Sпрям.врезка","геометрія"],["KMB-003","Трійник круг-прямок.","Sкругл.тело + Sпрям.врезка","геометрія"],["KMB-004","Трійник прямок-круг","Sчистовая + подтверждённые припуски/замк","геометрія"],["KMB-005","Адаптер круглий","Sчистовая + подтверждённые припуски/зиг/","геометрія"],["KMB-006","Адаптер прямок.","Sчистовая + подтверждённые припуски/соед","геометрія"],["KMB-007","Жировловлювач","Sчистовая + подтверждённые припуски/соед","геометрія"]];
+const SLIDES=[
+(t)=>`
+<div class="title-wrap">
+  <div>
+    <div class="reveal kicker">${t.k_title}</div>
+    <div class="reveal brand">ReUnfold<span class="sq">-Square</span></div>
+    <div class="reveal title-sub">${t.t_sub}</div>
+    <div class="reveal title-tag">${t.t_tag}</div>
+    <div class="reveal title-badges">
+      <div class="tb"><b>18/48</b> ${t.tb_ready}</div>
+      <div class="tb"><b>306</b> ${t.tb_tests}</div>
+      <div class="tb"><b>&lt;0.04%</b> ${t.tb_dev}</div>
+    </div>
+  </div>
+  <div class="reveal hero-img float"><img src="${IMG}GLAVNYY_square_to_round_vertikalnyy.png" alt="s2r"></div>
+</div>`,
+(t)=>`
+<div class="reveal kicker">${t.k_goal}</div>
+<h2 class="reveal">${t.g_h}</h2>
+<p class="reveal lead">${t.g_lead}</p>
+<div class="cards reveal" style="grid-template-columns:repeat(3,1fr);margin-top:30px">
+  <div class="card"><span class="ic">📐</span><h3>${t.g_c1h}</h3><p>${t.g_c1p}</p></div>
+  <div class="card"><span class="ic">🎯</span><h3>${t.g_c2h}</h3><p>${t.g_c2p}</p></div>
+  <div class="card"><span class="ic">🧩</span><h3>${t.g_c3h}</h3><p>${t.g_c3p}</p></div>
+</div>`,
+(t)=>`
+<div class="two">
+  <div>
+    <div class="reveal kicker">${t.k_break}</div>
+    <h2 class="reveal">${t.b_h}</h2>
+    <p class="reveal lead">${t.b_lead}</p>
+    <ul class="check reveal"><li>${t.b_l1}</li><li>${t.b_l2}</li><li>${t.b_l3}</li></ul>
+  </div>
+  <div class="reveal imgcard contain"><img src="${IMG}GLAVNYY_square_to_round_vertikalnyy.png" alt="s2r"></div>
+</div>`,
+(t)=>`
+<div class="method">
+  <div>
+    <div class="reveal kicker">${t.k_method}</div>
+    <h2 class="reveal">${t.m_h}</h2>
+    <p class="reveal lead">${t.m_lead}</p>
+    <div class="formula-box reveal">
+      <span class="lbl">${t.m_f_lbl}</span>
+      calculateSquareToRoundArea(W,H,D,L,offW,offH)<br>= 4 × △ ${t.m_tri} + 4 × ◔ ${t.m_cone}
+    </div>
+  </div>
+  <div class="reveal imgcard contain"><img src="${IMG}CMB-010-s2r-horizontal.png" alt="method"></div>
+</div>`,
+(t)=>`
+<div class="reveal kicker">${t.k_how}</div>
+<h2 class="reveal">${t.h_h}</h2>
+<p class="reveal lead">${t.h_lead}</p>
+<div class="two-layer reveal">
+  <div class="layer clean">
+    <span class="tag">${t.h_clean_tag}</span>
+    <h3>${t.h_clean_h}</h3><p>${t.h_clean_p}</p>
+    <div class="val">${t.h_clean_v}</div>
+  </div>
+  <div class="layer full">
+    <span class="tag">${t.h_full_tag}</span>
+    <h3>${t.h_full_h}</h3><p>${t.h_full_p}</p>
+    <ul><li>SMF25 = 2·(W+H)·25</li><li>${t.h_c2} = π·D·10</li><li>${t.h_ob} = (π·D+8)·Hоб</li><li>${t.h_seam}</li></ul>
+    <div class="val">0.011% ${t.h_from_dxf}</div>
+  </div>
+</div>`,
+(t)=>`
+<div class="two">
+  <div>
+    <div class="reveal kicker">${t.k_elbow}</div>
+    <h2 class="reveal">${t.e_h}</h2>
+    <p class="reveal lead">${t.e_lead}</p>
+    <ul class="check reveal"><li>${t.e_l1}</li><li>${t.e_l2}</li><li>${t.e_l3}</li></ul>
+  </div>
+  <div class="reveal imgcard contain"><img src="${IMG}02-round-elbow-90.png" alt="elbow"></div>
+</div>`,
+(t)=>`
+<div class="reveal kicker">${t.k_strategy}</div>
+<h2 class="reveal">${t.s_h}</h2>
+<p class="reveal lead">${t.s_lead}</p>
+<div class="cards reveal" style="grid-template-columns:repeat(3,1fr);margin-top:30px">
+  <div class="card"><span class="ic">🧱</span><h3>${t.s_c1h}</h3><p>${t.s_c1p}</p></div>
+  <div class="card"><span class="ic">🏗️</span><h3>${t.s_c2h}</h3><p>${t.s_c2p}</p></div>
+  <div class="card"><span class="ic">✅</span><h3>${t.s_c3h}</h3><p>${t.s_c3p}</p></div>
+</div>`,
+(t)=>`
+<div class="reveal kicker">${t.k_catalog}</div>
+<h2 class="reveal">${t.c_h}</h2>
+<p class="reveal lead" style="margin-bottom:14px">${t.c_lead}</p>
+<div class="reveal catalog-full"><img src="${IMG}catalog_grid_clean.png" alt="catalog"></div>`,
+(t)=>`
+<div class="reveal kicker">${t.k_registry}</div>
+<h2 class="reveal">${t.r_h}</h2>
+<p class="reveal lead" style="margin-bottom:8px">${t.r_lead}</p>
+<div class="reg-grid reveal">${registryCards(t)}</div>`,
+(t)=>`
+<div class="reveal kicker">${t.k_draft}</div>
+<h2 class="reveal">${t.d_h}</h2>
+<p class="reveal lead">${t.d_lead}</p>
+<div class="stats reveal" style="grid-template-columns:repeat(4,1fr);margin-top:18px">
+  <div class="stat"><div class="num">39</div><div class="lbl">${t.d_s1}</div></div>
+  <div class="stat"><div class="num">7</div><div class="lbl">${t.d_s2}</div></div>
+  <div class="stat"><div class="num">32</div><div class="lbl">${t.d_s3}</div></div>
+  <div class="stat"><div class="num">6</div><div class="lbl">${t.d_s4}</div></div>
+</div>
+<div class="two-layer reveal" style="grid-template-columns:1.1fr .9fr;margin-top:20px">
+  <div class="layer clean" style="border-color:rgba(138,160,184,.35)">
+    <span class="tag" style="background:rgba(138,160,184,.16);color:var(--cond);border-color:rgba(138,160,184,.35)">${t.d_src_tag}</span>
+    <h3>${t.d_src_h}</h3>
+    <ul style="font-family:var(--font)">
+      <li style="color:var(--muted)">${t.d_src1}</li>
+      <li style="color:var(--muted)">${t.d_src2}</li>
+      <li style="color:var(--muted)">${t.d_src3}</li>
+      <li style="color:var(--muted)">${t.d_src4}</li>
+    </ul>
+  </div>
+  <div class="layer full">
+    <span class="tag">${t.d_way_tag}</span>
+    <h3>${t.d_way_h}</h3>
+    <p>${t.d_way_p}</p>
+    <div class="val" style="color:var(--gold)">${t.d_way_v}</div>
+  </div>
+</div>`,
+
+(t)=>`
+<div class="reveal kicker">${t.k_list}</div>
+<h2 class="reveal">${t.l_h}</h2>
+<div class="reveal draft-table-wrap">
+<table class="draft-table">
+<thead><tr><th>${t.l_th1}</th><th>${t.l_th2}</th><th>${t.l_th3}</th><th>${t.l_th4}</th><th>${t.l_th5}</th></tr></thead>
+<tbody>${draftRows(t)}</tbody>
+</table>
+</div>`,
+
+(t)=>`
+<div class="reveal kicker">${t.k_accuracy}</div>
+<h2 class="reveal">${t.a_h}</h2>
+<p class="reveal lead">${t.a_lead}</p>
+<table class="acc-table reveal">
+  <thead><tr><th>${t.a_th1}</th><th>${t.a_th2}</th><th>${t.a_th3}</th><th>${t.a_th4}</th></tr></thead>
+  <tbody>
+    <tr><td><span class="code">CMB-010</span> · ${t.a_r1}</td><td>${t.a_c_center}</td><td class="dev">−0.005%</td><td><span class="badge part">${t.st_part}</span></td></tr>
+    <tr><td><span class="code">CMB-010</span> · ${t.a_r2}</td><td>${t.a_c_full}</td><td class="dev">0.011%</td><td><span class="badge part">${t.st_part}</span></td></tr>
+    <tr><td><span class="code">RND-022</span> · ${t.a_r3}</td><td>D150 45°</td><td class="dev">0.1%</td><td><span class="badge ok">${t.st_ok}</span></td></tr>
+    <tr><td><span class="code">CMB-041</span> · ${t.a_r4}</td><td>${t.a_c_ellipse}</td><td class="dev">≈0%</td><td><span class="badge ok">${t.st_ok}</span></td></tr>
+    <tr><td><span class="code">CMB-040</span> · ${t.a_r5}</td><td>${t.a_c_wall}</td><td class="dev">+0.12%</td><td><span class="badge ok">${t.st_ok}</span></td></tr>
+  </tbody>
+</table>
+<p class="reveal" style="color:var(--muted);margin-top:14px;font-size:13px">${t.a_note}</p>`,
+(t)=>`
+<div class="reveal kicker">${t.k_numbers}</div>
+<h2 class="reveal">${t.n_h}</h2>
+<div class="stats reveal">
+  <div class="stat"><div class="num">18/48</div><div class="lbl">${t.n_s1}</div></div>
+  <div class="stat"><div class="num">306</div><div class="lbl">${t.n_s2}</div></div>
+  <div class="stat"><div class="num">0.001–0.04%</div><div class="lbl">${t.n_s3}</div></div>
+  <div class="stat"><div class="num">2</div><div class="lbl">${t.n_s4}</div></div>
+</div>
+<div class="bar-wrap reveal">
+  <div class="bar-row"><span>${t.n_bar_l}</span><span>38%</span></div>
+  <div class="bar"><span class="seg1" style="--w1:31%"></span><span class="seg2" style="--w2:7%"></span></div>
+  <div class="legend"><span><i style="background:#4ea3ff"></i>${t.n_leg1}</span><span><i style="background:#ffb454"></i>${t.n_leg2}</span></div>
+  <p style="color:var(--muted);margin-top:12px;font-size:14px">${t.n_note}</p>
+</div>`,
+(t)=>`
+<div class="reveal kicker">${t.k_next}</div>
+<h2 class="reveal">${t.x_h}</h2>
+<div class="pill-row reveal">
+  <div class="pill">1 · <b>${t.x_p1b}</b> ${t.x_p1}</div>
+  <div class="pill">2 · <b>${t.x_p2b}</b> ${t.x_p2}</div>
+  <div class="pill">3 · <b>${t.x_p3b}</b> ${t.x_p3}</div>
+  <div class="pill">4 · <b>${t.x_p4b}</b> ${t.x_p4}</div>
+</div>
+<div class="plan-days reveal">
+  <div class="day done"><div class="d">${t.x_fri}</div><p>${t.x_fri_p}</p></div>
+  <div class="day"><div class="d">${t.x_sat}</div><p>${t.x_sat_p}</p></div>
+  <div class="day"><div class="d">${t.x_sun}</div><p>${t.x_sun_p}</p></div>
+</div>`,
+(t)=>`
+<div class="finale">
+  <div class="reveal kicker">${t.k_finale}</div>
+  <h2 class="reveal">${t.f_h}</h2>
+  <div class="reveal joke">${t.f_joke}</div>
+  <div class="reveal sub">${t.f_sub}</div>
+  <div class="reveal pill-row" style="justify-content:center;margin-top:26px">
+    <div class="pill"><b>18/48</b> ${t.f_p1}</div>
+    <div class="pill"><b>306</b> ${t.f_p2}</div>
+    <div class="pill"><b>&lt;0.04%</b> ${t.f_p3}</div>
+  </div>
+</div>`,
+];
+function draftRows(t){
+  return DRAFT.map(([code,name,f,src])=>`<tr><td class="dc">${code}</td><td>${name}</td><td class="df">${f}</td><td class="ds">${src}</td><td><span class="db">${t.st_cond}</span></td></tr>`).join('');
+}
+function registryCards(t){
+  const rows=[
+    ['GLAVNYY_square_to_round_vertikalnyy','CMB-010',t.rc_s2r,'4△+4◔','part',t.st_part],
+    ['02-round-elbow-90','RND-020',t.rc_elbow90,'Σ '+t.rc_seg,'ok',t.st_ok],
+    ['02-round-elbow-45','RND-022',t.rc_elbow45,t.rc_halfchord,'ok',t.st_ok],
+    ['03-round-transition','RND-040',t.rc_trans,'π(R1+R2)l','ok',t.st_ok],
+    ['05-round-tee','RND-050',t.rc_tee,'Σ'+t.rc_body+'+'+t.rc_saddle,'ok',t.st_ok],
+    ['12-round-cross','RND-150',t.rc_cross,t.rc_cross_f,'cond',t.st_cond],
+    ['09-round-saddle','RND-090',t.rc_saddle_i,'saddleArea','cond',t.st_cond],
+    ['CMB-040-rect-tee-round','CMB-040',t.rc_rectcyl,'π·d²/(4·sinα)','ok',t.st_ok],
+    ['RCT-050-rect-tee-rect','RCT-050',t.rc_recttee,'Sтіло+Sврізка−Sотв','ok',t.st_ok],
+  ];
+  return rows.map(([img,code,name,f,st,stt])=>{
+    const ph = img==='DEV'
+      ? `<div class="reg-ph dev"><span>${t.rc_dev}</span></div>`
+      : `<div class="reg-ph"><img src="${IMG}${img}.png" alt="${code}"></div>`;
+    return `<div class="reg-card">${ph}<div class="reg-body">
+      <div class="reg-code">${code}</div>
+      <div class="reg-name">${name}</div>
+      <div class="reg-formula">${f}</div>
+      <div class="reg-status"><span class="badge ${st}">${stt}</span></div>
+    </div></div>`;
+  }).join('');
+}
+const I18N={
+uk:{
+  auto:'Авто',
+  k_title:'Розрахунок площі розгортки листового металу',
+  t_sub:'Готувались рік — вирішили за вихідні',
+  t_tag:'Площа розгортки · метод триангуляції · звірка з CAMduct',
+  tb_ready:'з формулою',tb_tests:'тести зелені',tb_dev:'відхилення від DXF',
+  k_goal:'Ціль',
+  g_h:'Точна площа металу — до виробництва',
+  g_lead:'Рахуємо витрачену площу листа на етапі специфікації, а не постфактум. Еталон геометрії — розгортки DXF з CAMduct.',
+  g_c1h:'Розгортка',g_c1p:'Точна геометрія розгортки кожної фасонної частини, виведена з реальних DXF.',
+  g_c2h:'Точність по шарах',g_c2p:'Площа набирається пошарово; кожен шар звіряється окремо, не єдиним допуском.',
+  g_c3h:'Примітиви + збірка',g_c3p:'Складні вироби збираються з простих, формула переноситься між ними.',
+  k_break:'Прорив вихідних',
+  b_h:'Перехід квадрат-круг узято',
+  b_lead:'Найскладніша розгортка каталогу — square-to-round. Почали з неї: береться вона — береться й решта.',
+  b_l1:'Чистова: 3 кейси (центр / зі зміщенням / екстрим), відхилення < 0.04%',
+  b_l2:'Повна площа: 5 технологічних шарів, 0.011% від еталонного DXF',
+  b_l3:'Без калібрування — чиста геометрія, звірена з CAMduct',
+  k_method:'Метод',
+  m_h:'Триангуляція розгортки',
+  m_lead:'Бокова поверхня переходу розбивається на 4 плоскі трикутники (по сторонах) і 4 кутові конуси. Кожен фрагмент рахується точно, сума дає повну площу.',
+  m_f_lbl:'Функція рушія:',
+  m_tri:'плоскі',m_cone:'кутові',
+  k_how:'Два шари площі',
+  h_h:'Чистова та повна — завжди окремо',
+  h_lead:'Кожен виріб рахується у два незалежні шари. Припуск не зашивається у формулу, а додається окремим членом — так точність переноситься між виробами.',
+  h_clean_tag:'Шар 1',h_clean_h:'Чистова площа',
+  h_clean_p:'Базова геометрія розгортки, без припусків. Еталон — DXF «без замків».',
+  h_clean_v:'Допуск ≤ 0.5%',
+  h_full_tag:'Шар 2',h_full_h:'Повна площа',
+  h_full_p:'Чистова + технологічні шари, кожен окремим членом:',
+  h_c2:'замок горловини C2',h_ob:'обечайка',h_seam:'поздовжній шов',
+  h_from_dxf:'від DXF',
+  k_elbow:'Відводи',
+  e_h:'Хорди та число сегментів N',
+  e_lead:'Площа стандартного відводу береться з таблиці підтверджених по CAMduct значень (прямий пошук). Геометрична формула — fallback для нестандартних кутів/діаметрів.',
+  e_l1:'90°/60° — повні хорди; 45°/30°/15° — половинні хорди',
+  e_l2:'N обмежене технологічно: шийна хорда ≥ 60 мм (безпека вальцювання)',
+  e_l3:'> 90° — складений відвід: 90° + залишок (120°=90+30)',
+  k_strategy:'Стратегія',
+  s_h:'Примітиви + збірка',
+  s_lead:'Замість 48 окремих формул розкладаємо вироби на примітиви й збираємо складні з них.',
+  s_c1h:'Прості примітиви',s_c1p:'Труба, повітровід, ніпель, муфта, фланець — базові цеглинки.',
+  s_c2h:'Складові зі збірки',s_c2p:'Хрестовина, трійники, заглушки — збираються з примітивів, без нових формул.',
+  s_c3h:'Verify by code',s_c3p:'Приймаємо не за звітом агента, а за фактичною звіркою коду з DXF.',
+  k_catalog:'Каталог',
+  c_h:'Каталог фасонних частин',
+  c_lead:'Круглі, прямокутні та комбіновані вироби. Показано вироби, узяті в роботу.',
+  k_registry:'Реєстр',
+  r_h:'Вироби з формулою',
+  r_lead:'Кожна позиція: шифр · назва · формула · статус. Де рендер ще не готовий — «зображення в розробці».',
+  rc_s2r:'Перехід круг-прямокутник',rc_elbow90:'Відвід 90°',rc_elbow45:'Відвід 45°',
+  rc_trans:'Перехід круглий',rc_tee:'Трійник круглий',rc_cross:'Хрестовина',
+  rc_saddle_i:'Сідло',rc_rectcyl:'Трійник прямокутний з врізкою',rc_recttee:'Трійник прямокутний',
+  rc_seg:'сегм.',rc_halfchord:'півхорди',rc_body:'тіло',rc_saddle:'сідло',
+  rc_cross_f:'тіло+2вр−2виріз',rc_dev:'ЗОБРАЖЕННЯ\\nВ РОЗРОБЦІ',
+  k_draft:'Чорновий реєстр',
+  d_h:'Формули з усіх джерел',
+  d_lead:'Ми не починали з нуля. Зібрано 39 позицій формул з різних джерел — старі калькулятори, методички, Excel-бази CAMduct. Але йдемо своїм шляхом: кожну формулу переглядаємо й перевіряємо під нашу ціль — повну площу.',
+  d_s1:'позицій зібрано',d_s2:'вже перевірено',d_s3:'умовних (на перевірку)',d_s4:'джерел формул',
+  d_src_tag:'Звідки',
+  d_src_h:'Джерела формул',
+  d_src1:'Старі калькулятори (duct_calculator, calc-square-camduct-v2)',
+  d_src2:'Методички та Excel-бази по даних CAMduct',
+  d_src3:'Альтернативні джерела (СПВА, таблиці габаритів)',
+  d_src4:'Напрацювання Codex у гілках',
+  d_way_tag:'Наш шлях',
+  d_way_h:'Переглядаємо кожну',
+  d_way_p:'«Умовна» = логіка є, але потрібна звірка з CAMduct. Не використовуємо чужу формулу як є — виводимо чистову геометрію, додаємо шари припусків, звіряємо з DXF. Так формула працює на всіх виробах, а не на одному.',
+  d_way_v:'Ціль — повна площа, не наближення',
+  k_list:'Чорновий реєстр · список',
+  l_h:'32 формули на перевірку',
+  l_th1:'Код',l_th2:'Виріб',l_th3:'Формула (чернетка)',l_th4:'Джерело',l_th5:'Статус',
+  k_accuracy:'Точність',
+  a_h:'Звірено з CAMduct',
+  a_lead:'Кожна формула звіряється з еталонною розгорткою DXF. Ключові підтверджені позиції:',
+  a_th1:'Виріб',a_th2:'Кейс',a_th3:'Відхилення',a_th4:'Статус',
+  a_r1:'перехід, чистова',a_r2:'перехід, повна',a_r3:'відвід',a_r4:'врізка-еліпс',a_r5:'стінка короба',
+  a_c_center:'центр',a_c_full:'5 шарів',a_c_ellipse:'π·d²/(4·sinα)',a_c_wall:'периметр×L',
+  st_ok:'Перевірено',st_part:'Частково',st_cond:'Умовна',
+  a_note:'Кінцева перевірка — постфактум за вагою: (завезений метал − відходи) = витрачена площа.',
+  k_numbers:'Цифри',
+  n_h:'Де ми зараз',
+  n_s1:'вироби з формулою (найскладніші)',n_s2:'тести — усі зелені',
+  n_s3:'відхилення формули від DXF',n_s4:'шари площі на виріб',
+  n_bar_l:'Готовність каталогу',
+  n_leg1:'Перевірено / готово',n_leg2:'Частково (виведено, добираємо)',
+  n_note:'38% — це навмисно взяті найскладніші позиції. Найважче вже позаду.',
+  k_next:'Далі',
+  x_h:'План: етапи + вихідні',
+  x_p1b:'База формул',x_p1:'(зараз)',x_p2b:'Рушій',x_p2:'розрахунку',
+  x_p3b:'Сайт',x_p3:'+ Atlas',x_p4b:'Odoo',x_p4:'інтеграція',
+  x_fri:'Пʼятниця',x_fri_p:'Складні примітиви: square-to-round ГОТОВ, врізки ГОТОВІ.',
+  x_sat:'Субота',x_sat_p:'Збірка складових + прямокутні примітиви (відвід, трійник).',
+  x_sun:'Неділя',x_sun_p:'Оформлення, реєстр, презентація, фінальна звірка. Дедлайн — 13 липня.',
+  k_finale:'Підсумок',
+  f_h:'Найважче — вже позаду',
+  f_joke:'«Довго запрягали, швидко поїхали»',
+  f_sub:'Готувались рік — а ключову, найскладнішу частину взяли за вихідні. Решта каталогу — справа техніки.',
+  f_p1:'найскладніших виробів',f_p2:'зелених тестів',f_p3:'точність по DXF',
+},
+ru:{
+  auto:'Авто',
+  k_title:'Расчёт площади развёртки листового металла',
+  t_sub:'Готовились год — решили за выходные',
+  t_tag:'Площадь развёртки · метод триангуляции · сверка с CAMduct',
+  tb_ready:'с формулой',tb_tests:'тесты зелёные',tb_dev:'отклонение от DXF',
+  k_goal:'Цель',
+  g_h:'Точная площадь металла — до производства',
+  g_lead:'Считаем израсходованную площадь листа на этапе спецификации, а не постфактум. Эталон геометрии — развёртки DXF из CAMduct.',
+  g_c1h:'Развёртка',g_c1p:'Точная геометрия развёртки каждой фасонной части, выведенная из реальных DXF.',
+  g_c2h:'Точность по слоям',g_c2p:'Площадь набирается послойно; каждый слой сверяется отдельно, не единым допуском.',
+  g_c3h:'Примитивы + сборка',g_c3p:'Сложные изделия собираются из простых, формула переносится между ними.',
+  k_break:'Прорыв выходных',
+  b_h:'Переход квадрат-круг взят',
+  b_lead:'Самая сложная развёртка каталога — square-to-round. Начали с неё: берётся она — берётся и остальное.',
+  b_l1:'Чистовая: 3 кейса (центр / со смещением / экстрим), отклонение < 0.04%',
+  b_l2:'Полная площадь: 5 технологических слоёв, 0.011% от эталонного DXF',
+  b_l3:'Без калибровки — чистая геометрия, сверенная с CAMduct',
+  k_method:'Метод',
+  m_h:'Триангуляция развёртки',
+  m_lead:'Боковая поверхность перехода разбивается на 4 плоских треугольника (по сторонам) и 4 угловых конуса. Каждый фрагмент считается точно, сумма даёт полную площадь.',
+  m_f_lbl:'Функция движка:',
+  m_tri:'плоские',m_cone:'угловые',
+  k_how:'Два слоя площади',
+  h_h:'Чистовая и полная — всегда отдельно',
+  h_lead:'Каждое изделие считается в два независимых слоя. Припуск не зашивается в формулу, а добавляется отдельным членом — так точность переносится между изделиями.',
+  h_clean_tag:'Слой 1',h_clean_h:'Чистовая площадь',
+  h_clean_p:'Базовая геометрия развёртки, без припусков. Эталон — DXF «без замков».',
+  h_clean_v:'Допуск ≤ 0.5%',
+  h_full_tag:'Слой 2',h_full_h:'Полная площадь',
+  h_full_p:'Чистовая + технологические слои, каждый отдельным членом:',
+  h_c2:'замок горловины C2',h_ob:'обечайка',h_seam:'продольный шов',
+  h_from_dxf:'от DXF',
+  k_elbow:'Отводы',
+  e_h:'Хорды и число сегментов N',
+  e_lead:'Площадь стандартного отвода берётся из таблицы подтверждённых по CAMduct значений (прямой поиск). Геометрическая формула — fallback для нестандартных углов/диаметров.',
+  e_l1:'90°/60° — полные хорды; 45°/30°/15° — половинные хорды',
+  e_l2:'N ограничено технологически: шейная хорда ≥ 60 мм (безопасность вальцовки)',
+  e_l3:'> 90° — составной отвод: 90° + остаток (120°=90+30)',
+  k_strategy:'Стратегия',
+  s_h:'Примитивы + сборка',
+  s_lead:'Вместо 48 отдельных формул раскладываем изделия на примитивы и собираем сложные из них.',
+  s_c1h:'Простые примитивы',s_c1p:'Труба, воздуховод, ниппель, муфта, фланец — базовые кирпичики.',
+  s_c2h:'Составные из сборки',s_c2p:'Крестовина, тройники, заглушки — собираются из примитивов, без новых формул.',
+  s_c3h:'Verify by code',s_c3p:'Принимаем не по отчёту агента, а по фактической сверке кода с DXF.',
+  k_catalog:'Каталог',
+  c_h:'Каталог фасонных частей',
+  c_lead:'Круглые, прямоугольные и комбинированные изделия. Показаны изделия, взятые в работу.',
+  k_registry:'Реестр',
+  r_h:'Изделия с формулой',
+  r_lead:'Каждая позиция: шифр · название · формула · статус. Где рендер ещё не готов — «изображение в разработке».',
+  rc_s2r:'Переход круг-прямоугольник',rc_elbow90:'Отвод 90°',rc_elbow45:'Отвод 45°',
+  rc_trans:'Переход круглый',rc_tee:'Тройник круглый',rc_cross:'Крестовина',
+  rc_saddle_i:'Седло',rc_rectcyl:'Прямоуг. тройник с врезкой',rc_recttee:'Прямоуг. тройник',
+  rc_seg:'сегм.',rc_halfchord:'полухорды',rc_body:'тело',rc_saddle:'седло',
+  rc_cross_f:'тело+2вр−2выреза',rc_dev:'ИЗОБРАЖЕНИЕ\\nВ РАЗРАБОТКЕ',
+  k_draft:'Черновой реестр',
+  d_h:'Формулы из всех источников',
+  d_lead:'Мы не начинали с нуля. Собрано 39 позиций формул из разных источников — старые калькуляторы, методички, Excel-базы CAMduct. Но идём своим путём: каждую формулу пересматриваем и проверяем под нашу цель — полную площадь.',
+  d_s1:'позиций собрано',d_s2:'уже проверено',d_s3:'условных (на проверку)',d_s4:'источников формул',
+  d_src_tag:'Откуда',
+  d_src_h:'Источники формул',
+  d_src1:'Старые калькуляторы (duct_calculator, calc-square-camduct-v2)',
+  d_src2:'Методички и Excel-базы по данным CAMduct',
+  d_src3:'Альтернативные источники (СПВА, таблицы габаритов)',
+  d_src4:'Наработки Codex в ветках',
+  d_way_tag:'Наш путь',
+  d_way_h:'Пересматриваем каждую',
+  d_way_p:'«Условная» = логика есть, но нужна сверка с CAMduct. Не используем чужую формулу как есть — выводим чистовую геометрию, добавляем слои припусков, сверяем с DXF. Так формула работает на всех изделиях, а не на одном.',
+  d_way_v:'Цель — полная площадь, не приближение',
+  k_list:'Черновой реестр · список',
+  l_h:'32 формулы на проверку',
+  l_th1:'Код',l_th2:'Изделие',l_th3:'Формула (черновик)',l_th4:'Источник',l_th5:'Статус',
+  k_accuracy:'Точность',
+  a_h:'Сверено с CAMduct',
+  a_lead:'Каждая формула сверяется с эталонной развёрткой DXF. Ключевые подтверждённые позиции:',
+  a_th1:'Изделие',a_th2:'Кейс',a_th3:'Отклонение',a_th4:'Статус',
+  a_r1:'переход, чистовая',a_r2:'переход, полная',a_r3:'отвод',a_r4:'врезка-эллипс',a_r5:'стенка короба',
+  a_c_center:'центр',a_c_full:'5 слоёв',a_c_ellipse:'π·d²/(4·sinα)',a_c_wall:'периметр×L',
+  st_ok:'Проверено',st_part:'Частично',st_cond:'Условная',
+  a_note:'Конечная проверка — постфактум по весу: (завезённый металл − отходы) = израсходованная площадь.',
+  k_numbers:'Цифры',
+  n_h:'Где мы сейчас',
+  n_s1:'изделий с формулой (сложнейшие)',n_s2:'тестов — все зелёные',
+  n_s3:'отклонение формулы от DXF',n_s4:'слоя площади на изделие',
+  n_bar_l:'Готовность каталога',
+  n_leg1:'Проверено / готово',n_leg2:'Частично (выведено, добираем)',
+  n_note:'38% — это намеренно взятые самые сложные позиции. Самое трудное уже позади.',
+  k_next:'Дальше',
+  x_h:'План: этапы + выходные',
+  x_p1b:'База формул',x_p1:'(сейчас)',x_p2b:'Движок',x_p2:'расчёта',
+  x_p3b:'Сайт',x_p3:'+ Atlas',x_p4b:'Odoo',x_p4:'интеграция',
+  x_fri:'Пятница',x_fri_p:'Сложные примитивы: square-to-round ГОТОВ, врезки ГОТОВЫ.',
+  x_sat:'Суббота',x_sat_p:'Сборка составных + прямоугольные примитивы (отвод, тройник).',
+  x_sun:'Воскресенье',x_sun_p:'Оформление, реестр, презентация, финальная сверка. Дедлайн — 13 июля.',
+  k_finale:'Итог',
+  f_h:'Самое трудное — уже позади',
+  f_joke:'«Долго запрягали, быстро поехали»',
+  f_sub:'Готовились год — а ключевую, самую сложную часть взяли за выходные. Остальной каталог — дело техники.',
+  f_p1:'сложнейших изделий',f_p2:'зелёных тестов',f_p3:'точность по DXF',
+}
+};
+let lang='uk',idx=0,auto=false,autoTimer=null;
+const AUTO_MS=9000;
+const deckEl=document.getElementById('deck'),dotsEl=document.getElementById('dots'),
+  counter=document.getElementById('counter'),autobar=document.getElementById('autobar');
+function render(){
+  const t=I18N[lang];deckEl.innerHTML='';
+  SLIDES.forEach((fn,i)=>{
+    const s=document.createElement('section');
+    s.className='slide'+(i===idx?' active':'');
+    s.innerHTML=fn(t).replace(/\\n/g,'<br>');
+    deckEl.appendChild(s);
+  });
+  buildDots();updateCounter();
+  document.querySelectorAll('[data-i18n="auto"]').forEach(e=>e.textContent=t.auto);
+}
+function buildDots(){dotsEl.innerHTML='';SLIDES.forEach((_,i)=>{const d=document.createElement('div');d.className='dot'+(i===idx?' on':'');d.onclick=()=>go(i);dotsEl.appendChild(d);});}
+function updateCounter(){counter.textContent=String(idx+1).padStart(2,'0')+' / '+String(SLIDES.length).padStart(2,'0');}
+function setActive(){deckEl.querySelectorAll('.slide').forEach((s,i)=>s.classList.toggle('active',i===idx));document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on',i===idx));updateCounter();}
+function go(i){if(i<0)i=SLIDES.length-1;if(i>=SLIDES.length)i=0;idx=i;setActive();if(auto)restartAuto();}
+function next(){go(idx+1)}function prev(){go(idx-1)}
+function restartAuto(){clearTimeout(autoTimer);autobar.classList.remove('run');autobar.style.width='0';void autobar.offsetWidth;autobar.classList.add('run');autobar.style.transitionDuration=AUTO_MS+'ms';autobar.style.width='100%';autoTimer=setTimeout(()=>{if(idx===SLIDES.length-1){toggleAuto(false);}else next();},AUTO_MS);}
+function toggleAuto(on){auto=(on===undefined)?!auto:on;const b=document.getElementById('autoBtn'),ic=document.getElementById('autoIc');b.classList.toggle('active',auto);ic.textContent=auto?'❚❚':'▶';if(auto)restartAuto();else{clearTimeout(autoTimer);autobar.classList.remove('run');autobar.style.width='0';}}
+function setLang(l){if(l===lang)return;lang=l;document.querySelectorAll('.lang span').forEach(s=>s.classList.toggle('on',s.dataset.lang===l));document.documentElement.lang=l;const c=idx;render();idx=c;setActive();}
+document.getElementById('next').onclick=next;
+document.getElementById('prev').onclick=prev;
+document.getElementById('autoBtn').onclick=()=>toggleAuto();
+document.querySelectorAll('.lang span').forEach(s=>s.onclick=()=>setLang(s.dataset.lang));
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){e.preventDefault();next();}
+  else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();prev();}
+  else if(e.key==='Home')go(0);else if(e.key==='End')go(SLIDES.length-1);
+  else if(e.key.toLowerCase()==='a')toggleAuto();
+  else if(e.key==='1')setLang('uk');else if(e.key==='2')setLang('ru');
+});
+let tx=0;
+deckEl.addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+deckEl.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50){dx<0?next():prev();}},{passive:true});
+render();
+</script>
+</body>
+</html>
