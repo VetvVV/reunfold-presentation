@@ -90,6 +90,16 @@ border-radius:6px;border:1px solid var(--line);color:var(--mut);white-space:nowr
 .map .st{width:210px;color:var(--mut);font-size:12px}
 .map .st .dot{margin-right:7px}
 .map tr.k-a .st{color:var(--or)}
+.map .st.k-a{color:var(--or)}
+.map .st.k-b .dot{background:var(--steel)}
+.map .st.k-c{color:var(--dim)}
+.map .st.k-c .dot{background:transparent;border:1px solid var(--steel)}
+.cov-cols{display:flex;gap:24px;align-self:stretch;width:100%;min-height:0}
+.cov-cols table{flex:1;align-self:start}
+.cov-cols .st{width:auto}
+.cov-cols .c{width:62px}
+.cov-cols .map td{padding:4px 8px 4px 0;font-size:11.5px}
+.cov-cols .grp{color:var(--dim);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;padding:0 0 5px;border:none}
 .title-slide{padding:0;align-items:center;justify-content:center;text-align:center}
 .hero{position:absolute;width:74%;opacity:.07;filter:invert(1);pointer-events:none}
 .title-body{position:relative;z-index:1}
@@ -128,9 +138,10 @@ letter-spacing:.06em;border-radius:0}
 .logo-sm{height:20px;opacity:.75}
 .prog{position:fixed;left:0;top:0;height:2px;background:var(--or);z-index:6;transition:width .25s}
 
-.cover{display:grid;grid-template-columns:280px minmax(0,1fr);gap:36px;flex:1;min-height:0}
-.cov-big{display:flex;flex-direction:column;gap:14px}
-.cov-card{background:var(--panel);border-radius:10px;padding:20px 22px;border-left:3px solid var(--steel)}
+.cover{display:flex;flex-direction:column;gap:18px;flex:1;min-height:0}
+.cov-big{display:flex;flex-direction:row;gap:16px}
+.cov-big .cov-card{flex:1}
+.cov-card{background:var(--panel);border-radius:10px;padding:16px 20px;border-left:3px solid var(--steel)}
 .cov-card.on{border-left-color:var(--or)}
 .cov-card b{display:block;font-family:'IBM Plex Mono',monospace;font-size:34px;color:var(--mut);
 font-weight:600;margin-bottom:8px}
@@ -153,9 +164,9 @@ b{font-weight:600}
     <h1>Розрахунок розгорток</h1>
     <p class="lead">Площа металу рахується до виробництва, а не через місяць після нього</p>
     <div class="title-stats">
-      <div><b>86 %</b><span><t data-ua="номенклатури з повною площею" data-ru="номенклатуры с полной площадью">номенклатури з повною площею</t></span></div>
+      <div><b>77 %</b><span><t data-ua="номенклатури основного базису (161 852 / 209 904)" data-ru="номенклатуры основного базиса (161 852 / 209 904)">номенклатури основного базису (161 852 / 209 904)</t></span></div>
       <div><b>0.000 %</b><span><t data-ua="найкраща збіжність" data-ru="лучшее совпадение">найкраща збіжність</t></span></div>
-      <div><b>27</b><span><t data-ua="виробів із формулою" data-ru="изделий с формулой">виробів із формулою</t></span></div>
+      <div><b>35</b><span><t data-ua="виробів із формулою" data-ru="изделий с формулой">виробів із формулою</t></span></div>
     </div>
   </div>
 </section><section class="slide">
@@ -164,23 +175,60 @@ b{font-weight:600}
   <div class="cover">
     <div class="cov-big">
       <div class="cov-card on">
-        <b>86 %</b>
-        <p><t data-ua="номенклатури підприємства рахується з повною площею — металом, який реально закуповується" data-ru="номенклатуры предприятия считается с полной площадью — металлом, который реально закупается">номенклатури підприємства рахується з повною площею — металом, який реально закуповується</t></p>
+        <b>77 %</b>
+        <p><t data-ua="номенклатури основного базису рахується з площею, звіреною з CAMduct <0,5% (161 852 з 209 904 позицій; повний корпус 76,92%)" data-ru="номенклатуры основного базиса считается с площадью, сверенной с CAMduct <0,5% (161 852 из 209 904 позиций; полный корпус 76,92%)">номенклатури основного базису рахується з площею, звіреною з CAMduct &lt;0,5% (161 852 з 209 904 позицій; повний корпус 76,92%)</t></p>
       </div>
       <div class="cov-card">
-        <b>0.03 %</b>
-        <p><t data-ua="середня розбіжність з еталоном по всіх підтверджених виробах" data-ru="среднее расхождение с эталоном по всем подтверждённым изделиям">середня розбіжність з еталоном по всіх підтверджених виробах</t></p>
+        <b>≤0,04 %</b>
+        <p><t data-ua="розбіжність з еталоном по всіх підтверджених виробах — діапазон 0,000–0,038%" data-ru="расхождение с эталоном по всем подтверждённым изделиям — диапазон 0,000–0,038%">розбіжність з еталоном по всіх підтверджених виробах — діапазон 0,000–0,038%</t></p>
       </div>
     </div>
-    <table class="map cov-tbl">
-      <tr><td class="c">RCT-010</td><td><t data-ua="Повітропровід прямокутний" data-ru="Воздуховод прямоугольный">Повітропровід прямокутний</t></td><td class="st k-a"><i class="dot"></i><t data-ua="обидва шари" data-ru="оба слоя">обидва шари</t></td></tr>
-      <tr><td class="c">RCT-020</td><td><t data-ua="Відвід прямокутний" data-ru="Отвод прямоугольный">Відвід прямокутний</t></td><td class="st k-a"><i class="dot"></i><t data-ua="обидва шари" data-ru="оба слоя">обидва шари</t></td></tr>
-      <tr><td class="c">RND-020</td><td><t data-ua="Відвід круглий" data-ru="Отвод круглый">Відвід круглий</t></td><td class="st k-a"><i class="dot"></i><t data-ua="обидва шари" data-ru="оба слоя">обидва шари</t></td></tr>
-      <tr><td class="c">RND-010</td><td><t data-ua="Труба кругла" data-ru="Труба круглая">Труба кругла</t></td><td class="st k-a"><i class="dot"></i><t data-ua="обидва шари" data-ru="оба слоя">обидва шари</t></td></tr>
-      <tr><td class="c">RCT-040</td><td><t data-ua="Перехід прямокутний" data-ru="Переход прямоугольный">Перехід прямокутний</t></td><td class="st k-a"><i class="dot"></i><t data-ua="обидва шари" data-ru="оба слоя">обидва шари</t></td></tr>
-      <tr><td class="c">RCT-080</td><td><t data-ua="Заглушка прямокутна" data-ru="Заглушка прямоугольная">Заглушка прямокутна</t></td><td class="st k-a"><i class="dot"></i><t data-ua="обидва шари" data-ru="оба слоя">обидва шари</t></td></tr>
-      <tr><td class="c">CMB-010</td><td><t data-ua="Перехід коло-прямокутник" data-ru="Переход круг-прямоугольник">Перехід коло-прямокутник</t></td><td class="st k-a"><i class="dot"></i><t data-ua="обидва шари" data-ru="оба слоя">обидва шари</t></td></tr>
+    <div class="cov-cols">
+    <table class="map">
+      <tr><td class="grp" colspan="3"><t data-ua="Обидва шари · 15" data-ru="Оба слоя · 15">Обидва шари · 15</t></td></tr>
+      <tr><td class="c">RCT-010</td><td><t data-ua="Повітропровід прямокутний" data-ru="Воздуховод прямоугольный">Повітропровід прямокутний</t></td><td class="st k-a"><i class="dot"></i><t data-ua="обидва шари" data-ru="оба слоя">обидва шари</t></td></tr>
+      <tr><td class="c">RCT-020</td><td><t data-ua="Відвід прямокутний" data-ru="Отвод прямоугольный">Відвід прямокутний</t></td><td class="st k-a"><i class="dot"></i><t data-ua="обидва шари" data-ru="оба слоя">обидва шари</t></td></tr>
+      <tr><td class="c">RCT-040</td><td><t data-ua="Перехід прямокутний" data-ru="Переход прямоугольный">Перехід прямокутний</t></td><td class="st k-a"><i class="dot"></i><t data-ua="обидва шари" data-ru="оба слоя">обидва шари</t></td></tr>
+      <tr><td class="c">RND-010</td><td><t data-ua="Труба кругла" data-ru="Труба круглая">Труба кругла</t></td><td class="st k-a"><i class="dot"></i><t data-ua="обидва шари" data-ru="оба слоя">обидва шари</t></td></tr>
+      <tr><td class="c">RND-020</td><td><t data-ua="Відвід круглий 90°" data-ru="Отвод круглый 90°">Відвід круглий 90°</t></td><td class="st k-a"><i class="dot"></i><t data-ua="обидва шари" data-ru="оба слоя">обидва шари</t></td></tr>
+      <tr><td class="c">RND-021</td><td><t data-ua="Відвід круглий 60°" data-ru="Отвод круглый 60°">Відвід круглий 60°</t></td><td class="st k-a"><i class="dot"></i><t data-ua="обидва шари" data-ru="оба слоя">обидва шари</t></td></tr>
+      <tr><td class="c">RND-022</td><td><t data-ua="Відвід круглий 45°" data-ru="Отвод круглый 45°">Відвід круглий 45°</t></td><td class="st k-a"><i class="dot"></i><t data-ua="обидва шари" data-ru="оба слоя">обидва шари</t></td></tr>
+      <tr><td class="c">RND-023</td><td><t data-ua="Відвід круглий 30°" data-ru="Отвод круглый 30°">Відвід круглий 30°</t></td><td class="st k-a"><i class="dot"></i><t data-ua="обидва шари" data-ru="оба слоя">обидва шари</t></td></tr>
+      <tr><td class="c">RND-024</td><td><t data-ua="Відвід круглий 15°" data-ru="Отвод круглый 15°">Відвід круглий 15°</t></td><td class="st k-a"><i class="dot"></i><t data-ua="обидва шари" data-ru="оба слоя">обидва шари</t></td></tr>
+      <tr><td class="c">RND-030</td><td><t data-ua="Перехід центральний" data-ru="Переход центральный">Перехід центральний</t></td><td class="st k-a"><i class="dot"></i><t data-ua="обидва шари" data-ru="оба слоя">обидва шари</t></td></tr>
+      <tr><td class="c">RND-040</td><td><t data-ua="Перехід односторонній" data-ru="Переход односторонний">Перехід односторонній</t></td><td class="st k-a"><i class="dot"></i><t data-ua="обидва шари" data-ru="оба слоя">обидва шари</t></td></tr>
+      <tr><td class="c">RND-041</td><td><t data-ua="Перехід зі зміщенням" data-ru="Переход со смещением">Перехід зі зміщенням</t></td><td class="st k-a"><i class="dot"></i><t data-ua="обидва шари" data-ru="оба слоя">обидва шари</t></td></tr>
+      <tr><td class="c">RND-160</td><td><t data-ua="Утка кругла (3 сегм.)" data-ru="Утка круглая (3 сегм.)">Утка кругла (3 сегм.)</t></td><td class="st k-a"><i class="dot"></i><t data-ua="обидва шари" data-ru="оба слоя">обидва шари</t></td></tr>
+      <tr><td class="c">CMB-010</td><td><t data-ua="Перехід коло-прямокутник" data-ru="Переход круг-прямоугольник">Перехід коло-прямокутник</t></td><td class="st k-a"><i class="dot"></i><t data-ua="обидва шари" data-ru="оба слоя">обидва шари</t></td></tr>
+      <tr><td class="c">RCT-080</td><td><t data-ua="Заглушка прямокутна" data-ru="Заглушка прямоугольная">Заглушка прямокутна</t></td><td class="st k-a"><i class="dot"></i><t data-ua="обидва шари" data-ru="оба слоя">обидва шари</t></td></tr>
     </table>
+    <table class="map">
+      <tr><td class="grp" colspan="3"><t data-ua="Чистовий шар · 14" data-ru="Чистовой слой · 14">Чистовий шар · 14</t></td></tr>
+      <tr><td class="c">RND-050</td><td><t data-ua="Трійник круглий" data-ru="Тройник круглый">Трійник круглий</t></td><td class="st k-b"><i class="dot"></i><t data-ua="чистовий шар" data-ru="чистовой слой">чистовий шар</t></td></tr>
+      <tr><td class="c">RND-051</td><td><t data-ua="Трійник круглий 90°" data-ru="Тройник круглый 90°">Трійник круглий 90°</t></td><td class="st k-b"><i class="dot"></i><t data-ua="чистовий шар" data-ru="чистовой слой">чистовий шар</t></td></tr>
+      <tr><td class="c">RND-052</td><td><t data-ua="Трійник круглий 45°" data-ru="Тройник круглый 45°">Трійник круглий 45°</t></td><td class="st k-b"><i class="dot"></i><t data-ua="чистовий шар" data-ru="чистовой слой">чистовий шар</t></td></tr>
+      <tr><td class="c">RND-060</td><td><t data-ua="Трійник конічний" data-ru="Тройник конический">Трійник конічний</t></td><td class="st k-b"><i class="dot"></i><t data-ua="чистовий шар" data-ru="чистовой слой">чистовий шар</t></td></tr>
+      <tr><td class="c">RND-070</td><td><t data-ua="Заглушка кругла" data-ru="Заглушка круглая">Заглушка кругла</t></td><td class="st k-b"><i class="dot"></i><t data-ua="чистовий шар" data-ru="чистовой слой">чистовий шар</t></td></tr>
+      <tr><td class="c">CMB-041</td><td><t data-ua="Кругла врізка 45°" data-ru="Круглая врезка 45°">Кругла врізка 45°</t></td><td class="st k-b"><i class="dot"></i><t data-ua="чистовий шар" data-ru="чистовой слой">чистовий шар</t></td></tr>
+      <tr><td class="c">CID 205</td><td><t data-ua="Фланець цільний" data-ru="Фланец цельный">Фланець цільний</t></td><td class="st k-b"><i class="dot"></i><t data-ua="чистовий шар" data-ru="чистовой слой">чистовий шар</t></td></tr>
+      <tr><td class="c">CID 204</td><td><t data-ua="Фланець сегментний" data-ru="Фланец сегментный">Фланець сегментний</t></td><td class="st k-b"><i class="dot"></i><t data-ua="чистовий шар" data-ru="чистовой слой">чистовий шар</t></td></tr>
+      <tr><td class="c">CID 215</td><td><t data-ua="Фланець болтовий" data-ru="Фланец болтовой">Фланець болтовий</t></td><td class="st k-b"><i class="dot"></i><t data-ua="чистовий шар" data-ru="чистовой слой">чистовий шар</t></td></tr>
+      <tr><td class="c">CID 78</td><td><t data-ua="Дросель круглий" data-ru="Дроссель круглый">Дросель круглий</t></td><td class="st k-b"><i class="dot"></i><t data-ua="чистовий шар" data-ru="чистовой слой">чистовий шар</t></td></tr>
+      <tr><td class="c">CID 64</td><td><t data-ua="Прямокутна гілка на магістралі" data-ru="Прямоугольная ветвь на магистрали">Прямокутна гілка на магістралі</t></td><td class="st k-b"><i class="dot"></i><t data-ua="чистовий шар" data-ru="чистовой слой">чистовий шар</t></td></tr>
+      <tr><td class="c">CID 382</td><td><t data-ua="П-адаптер" data-ru="П-адаптер">П-адаптер</t></td><td class="st k-b"><i class="dot"></i><t data-ua="чистовий шар" data-ru="чистовой слой">чистовий шар</t></td></tr>
+      <tr><td class="c">CID 9</td><td><t data-ua="Утка прямокутна" data-ru="Утка прямоугольная">Утка прямокутна</t></td><td class="st k-b"><i class="dot"></i><t data-ua="чистовий шар" data-ru="чистовой слой">чистовий шар</t></td></tr>
+      <tr><td class="c">CID 399</td><td><t data-ua="Відвід Drop Cheek" data-ru="Отвод Drop Cheek">Відвід Drop Cheek</t></td><td class="st k-b"><i class="dot"></i><t data-ua="чистовий шар" data-ru="чистовой слой">чистовий шар</t></td></tr>
+    </table>
+    <table class="map">
+      <tr><td class="grp" colspan="3"><t data-ua="Формула · 6" data-ru="Формула · 6">Формула · 6</t></td></tr>
+      <tr><td class="c">RND-061</td><td><t data-ua="Трійник, збірка" data-ru="Тройник, сборка">Трійник, збірка</t></td><td class="st k-c"><i class="dot"></i><t data-ua="формула" data-ru="формула">формула</t></td></tr>
+      <tr><td class="c">RND-100</td><td><t data-ua="Ніпель круглий" data-ru="Ниппель круглый">Ніпель круглий</t></td><td class="st k-c"><i class="dot"></i><t data-ua="формула" data-ru="формула">формула</t></td></tr>
+      <tr><td class="c">RND-140</td><td><t data-ua="Фланець круглий" data-ru="Фланец круглый">Фланець круглий</t></td><td class="st k-c"><i class="dot"></i><t data-ua="формула" data-ru="формула">формула</t></td></tr>
+      <tr><td class="c">RND-150</td><td><t data-ua="Хрестовина кругла" data-ru="Крестовина круглая">Хрестовина кругла</t></td><td class="st k-c"><i class="dot"></i><t data-ua="формула" data-ru="формула">формула</t></td></tr>
+      <tr><td class="c">RND-190</td><td><t data-ua="Муфта" data-ru="Муфта круглая">Муфта</t></td><td class="st k-c"><i class="dot"></i><t data-ua="формула" data-ru="формула">формула</t></td></tr>
+      <tr><td class="c">CMB-040</td><td><t data-ua="Врізка 90° у прямокутник" data-ru="Врезка 90° в прямоугольник">Врізка 90° у прямокутник</t></td><td class="st k-c"><i class="dot"></i><t data-ua="формула" data-ru="формула">формула</t></td></tr>
+    </table>
+    </div>
   </div>
 </section><section class="slide">
   <div class="rail"><span>RND-010</span></div>
@@ -928,6 +976,222 @@ b{font-weight:600}
     <tr><td><t data-ua="Площа повна" data-ru="Площадь полная">Площа повна</t></td><td class="m">0.37325</td><td class="m">0.37325</td><td class="m ok">0.00003 %</td></tr>
   </table>
   <p class="note"><t data-ua="На цьому ж тесті знайшли власну неточність: поправка стику була віднесена до припусків, а насправді це чистова геометрія. Виправлено того ж дня — повна площа не змінилася, чистова стала правдою." data-ru="На этом же тесте нашли собственную неточность: поправка стыка была отнесена к припускам, а на деле это чистовая геометрия. Исправлено в тот же день — полная площадь не изменилась, чистовая стала правдой.">На цьому ж тесті знайшли власну неточність: поправка стику була віднесена до припусків, а насправді це чистова геометрія. Виправлено того ж дня — повна площа не змінилася, чистова стала правдою.</t></p>
+</section><section class="slide">
+  <div class="rail"><span>CID 205</span></div>
+  <div class="head">
+    <div class="hgroup"><span class="code">CID 205</span><h2><t data-ua="Фланець круглий цільний" data-ru="Фланец круглый цельный">Фланець круглий цільний</t></h2></div>
+    <span class="chip k-a"><i class="dot"></i><t data-ua="Підтверджено еталоном" data-ru="Подтверждено эталоном">Підтверджено еталоном</t></span>
+  </div>
+  <div class="cols">
+    <div class="left">
+      <div class="render nofoto"></div>
+      <h3><t data-ua="Геометрія" data-ru="Геометрия">Геометрія</t></h3>
+      <ol class="steps"><li><t data-ua="Фланець вирізається з листа цілим — це плоске кільце між зовнішнім і внутрішнім діаметром." data-ru="Фланец вырезается из листа целиком — это плоское кольцо между внешним и внутренним диаметром.">Фланець вирізається з листа цілим — це плоске кільце між зовнішнім і внутрішнім діаметром.</t></li><li><t data-ua="Площа кільця = площа зовнішнього круга мінус площа отвору." data-ru="Площадь кольца = площадь внешнего круга минус площадь отверстия.">Площа кільця = площа зовнішнього круга мінус площа отвору.</t></li><li><t data-ua="Фланці не покупні — метал кільця йде в розхід." data-ru="Фланцы не покупные — металл кольца идёт в расход.">Фланці не покупні — метал кільця йде в розхід.</t></li></ol>
+    </div>
+    <div class="right">
+      <h3><t data-ua="Формула" data-ru="Формула">Формула</t></h3>
+      <div class="formula"><div class="frm"><span class="m">S=π(D<sup>2</sup>−d<sup>2</sup>)/(4·10<sup>6</sup>)</span></div></div>
+      <h3><t data-ua="Позначення" data-ru="Обозначения">Позначення</t></h3>
+      <table class="leg"><tr><td class="sym"><span class="m">D</span></td><td><t data-ua="зовнішній діаметр фланця" data-ru="внешний диаметр фланца">зовнішній діаметр фланця</t></td><td class="unit"><t data-ua="мм" data-ru="мм">мм</t></td></tr><tr><td class="sym"><span class="m">d</span></td><td><t data-ua="внутрішній діаметр (отвір)" data-ru="внутренний диаметр (отверстие)">внутрішній діаметр (отвір)</t></td><td class="unit"><t data-ua="мм" data-ru="мм">мм</t></td></tr></table>
+    </div>
+  </div>
+</section><section class="slide">
+  <div class="rail"><span>CID 205</span></div>
+  <div class="head">
+    <div class="hgroup"><span class="code">CID 205</span><h2><t data-ua="Фланець круглий цільний · перевірка" data-ru="Фланец круглый цельный · проверка">Фланець круглий цільний · перевірка</t></h2></div>
+    <span class="chip k-a"><i class="dot"></i><t data-ua="Підтверджено еталоном" data-ru="Подтверждено эталоном">Підтверджено еталоном</t></span>
+  </div>
+  <div class="proof"><div class="ex"><b class="exn"><t data-ua="Приклад 1" data-ru="Пример 1">Приклад 1</t></b><span class="m">D=207</span>, <span class="m">d=100</span> → <span class="m">S=0.025800</span> → <t data-ua="еталон" data-ru="эталон">еталон</t> <span class="m">0.025795</span> → <t data-ua="розбіжність" data-ru="расхождение">розбіжність</t> <span class="dev"><span class="m">0.0176%</span></span> <t data-ua="(Work 7.MAJ)" data-ru="(Work 7.MAJ)">(Work 7.MAJ)</t>.</div><div class="ex"><b class="exn"><t data-ua="Приклад 2" data-ru="Пример 2">Приклад 2</t></b><span class="m">D=126</span>, <span class="m">d=66</span> → <span class="m">S=0.009048</span> → <t data-ua="еталон" data-ru="эталон">еталон</t> <span class="m">0.009046</span> → <t data-ua="розбіжність" data-ru="расхождение">розбіжність</t> <span class="dev"><span class="m">0.0198%</span></span> <t data-ua="(Work 71180)" data-ru="(Work 71180)">(Work 71180)</t>.</div></div>
+  <p class="note"><t data-ua="Числа отримані прогоном реального коду (presentationAreas.mjs). Еталон — контрольна розгортка CAMduct того ж чистового шару." data-ru="Числа получены прогоном реального кода (presentationAreas.mjs). Эталон — контрольная развёртка CAMduct того же чистового слоя.">Числа отримані прогоном реального коду (presentationAreas.mjs). Еталон — контрольна розгортка CAMduct того ж чистового шару.</t></p>
+</section><section class="slide">
+  <div class="rail"><span>CID 204</span></div>
+  <div class="head">
+    <div class="hgroup"><span class="code">CID 204</span><h2><t data-ua="Фланець круглий сегментний" data-ru="Фланец круглый сегментный">Фланець круглий сегментний</t></h2></div>
+    <span class="chip k-a"><i class="dot"></i><t data-ua="Підтверджено еталоном" data-ru="Подтверждено эталоном">Підтверджено еталоном</t></span>
+  </div>
+  <div class="cols">
+    <div class="left">
+      <div class="render nofoto"></div>
+      <h3><t data-ua="Геометрія" data-ru="Геометрия">Геометрія</t></h3>
+      <ol class="steps"><li><t data-ua="Те саме кільце, але розрізане на N частин (сегментів) для економії листа." data-ru="То же кольцо, но разрезанное на N частей (сегментов) для экономии листа.">Те саме кільце, але розрізане на N частин (сегментів) для економії листа.</t></li><li><t data-ua="Одна частина = дуга кільця з нахлістом T на стик; нахліст береться з бібліотеки швів за іменем шва." data-ru="Одна часть = дуга кольца с нахлёстом T на стык; нахлёст берётся из библиотеки швов по имени шва.">Одна частина = дуга кільця з нахлістом T на стик; нахліст береться з бібліотеки швів за іменем шва.</t></li><li><t data-ua="У файлі MAJ лежить одна частина — саме її площу підтверджує еталон." data-ru="В файле MAJ лежит одна часть — именно её площадь подтверждает эталон.">У файлі MAJ лежить одна частина — саме її площу підтверджує еталон.</t></li></ol>
+    </div>
+    <div class="right">
+      <h3><t data-ua="Формула" data-ru="Формула">Формула</t></h3>
+      <div class="formula"><div class="frm"><span class="m">S<sub>част</sub>=π(D<sup>2</sup>−d<sup>2</sup>)/(4N) + T·(D−d)/2</span></div><div class="frm"><span class="m">·(1/10<sup>6</sup>)</span></div></div>
+      <h3><t data-ua="Позначення" data-ru="Обозначения">Позначення</t></h3>
+      <table class="leg"><tr><td class="sym"><span class="m">D</span></td><td><t data-ua="зовнішній діаметр" data-ru="внешний диаметр">зовнішній діаметр</t></td><td class="unit"><t data-ua="мм" data-ru="мм">мм</t></td></tr><tr><td class="sym"><span class="m">d</span></td><td><t data-ua="внутрішній діаметр" data-ru="внутренний диаметр">внутрішній діаметр</t></td><td class="unit"><t data-ua="мм" data-ru="мм">мм</t></td></tr><tr><td class="sym"><span class="m">N</span></td><td><t data-ua="число частин (сегментів)" data-ru="число частей (сегментов)">число частин (сегментів)</t></td><td class="unit"><t data-ua="шт" data-ru="шт">шт</t></td></tr><tr><td class="sym"><span class="m">T</span></td><td><t data-ua="нахліст шва (з бібліотеки)" data-ru="нахлёст шва (из библиотеки)">нахліст шва (з бібліотеки)</t></td><td class="unit"><t data-ua="мм" data-ru="мм">мм</t></td></tr></table>
+    </div>
+  </div>
+</section><section class="slide">
+  <div class="rail"><span>CID 204</span></div>
+  <div class="head">
+    <div class="hgroup"><span class="code">CID 204</span><h2><t data-ua="Фланець круглий сегментний · перевірка" data-ru="Фланец круглый сегментный · проверка">Фланець круглий сегментний · перевірка</t></h2></div>
+    <span class="chip k-a"><i class="dot"></i><t data-ua="Підтверджено еталоном" data-ru="Подтверждено эталоном">Підтверджено еталоном</t></span>
+  </div>
+  <div class="proof"><div class="ex"><b class="exn"><t data-ua="Приклад 1" data-ru="Пример 1">Приклад 1</t></b><span class="m">D=790</span>, <span class="m">d=731</span>, <span class="m">N=4</span>, <span class="m">T=20</span> → <span class="m">S=0.018210</span> → <t data-ua="еталон" data-ru="эталон">еталон</t> <span class="m">0.018207</span> → <t data-ua="розбіжність" data-ru="расхождение">розбіжність</t> <span class="dev"><span class="m">0.0176%</span></span> <t data-ua="(Work 69146)" data-ru="(Work 69146)">(Work 69146)</t>.</div><div class="ex"><b class="exn"><t data-ua="Приклад 2" data-ru="Пример 2">Приклад 2</t></b><span class="m">D=910</span>, <span class="m">d=830</span>, <span class="m">N=3</span>, <span class="m">T=20</span> → <span class="m">S=0.037242</span> → <t data-ua="еталон" data-ru="эталон">еталон</t> <span class="m">0.037231</span> → <t data-ua="розбіжність" data-ru="расхождение">розбіжність</t> <span class="dev"><span class="m">0.0308%</span></span> <t data-ua="(Work 69403)" data-ru="(Work 69403)">(Work 69403)</t>.</div></div>
+  <p class="note"><t data-ua="Числа отримані прогоном реального коду (presentationAreas.mjs). Еталон — контрольна розгортка CAMduct того ж чистового шару." data-ru="Числа получены прогоном реального кода (presentationAreas.mjs). Эталон — контрольная развёртка CAMduct того же чистового слоя.">Числа отримані прогоном реального коду (presentationAreas.mjs). Еталон — контрольна розгортка CAMduct того ж чистового шару.</t></p>
+</section><section class="slide">
+  <div class="rail"><span>CID 215</span></div>
+  <div class="head">
+    <div class="hgroup"><span class="code">CID 215</span><h2><t data-ua="Фланець круглий болтовий" data-ru="Фланец круглый болтовой">Фланець круглий болтовий</t></h2></div>
+    <span class="chip k-a"><i class="dot"></i><t data-ua="Підтверджено еталоном" data-ru="Подтверждено эталоном">Підтверджено еталоном</t></span>
+  </div>
+  <div class="cols">
+    <div class="left">
+      <div class="render nofoto"></div>
+      <h3><t data-ua="Геометрія" data-ru="Геометрия">Геометрія</t></h3>
+      <ol class="steps"><li><t data-ua="Те саме кільце фланця, але з рядом болтових отворів по колу." data-ru="То же кольцо фланца, но с рядом болтовых отверстий по окружности.">Те саме кільце фланця, але з рядом болтових отворів по колу.</t></li><li><t data-ua="Болтові отвори лежать окремими контурами і з тіла НЕ вичитаються — їх метал іде у відхід." data-ru="Болтовые отверстия лежат отдельными контурами и из тела НЕ вычитаются — их металл уходит в отход.">Болтові отвори лежать окремими контурами і з тіла НЕ вичитаються — їх метал іде у відхід.</t></li><li><t data-ua="Тому площа = повне кільце, як у цільного фланця." data-ru="Поэтому площадь = полное кольцо, как у цельного фланца.">Тому площа = повне кільце, як у цільного фланця.</t></li></ol>
+    </div>
+    <div class="right">
+      <h3><t data-ua="Формула" data-ru="Формула">Формула</t></h3>
+      <div class="formula"><div class="frm"><span class="m">S=π(D<sup>2</sup>−d<sup>2</sup>)/(4·10<sup>6</sup>)</span></div></div>
+      <h3><t data-ua="Позначення" data-ru="Обозначения">Позначення</t></h3>
+      <table class="leg"><tr><td class="sym"><span class="m">D</span></td><td><t data-ua="зовнішній діаметр" data-ru="внешний диаметр">зовнішній діаметр</t></td><td class="unit"><t data-ua="мм" data-ru="мм">мм</t></td></tr><tr><td class="sym"><span class="m">d</span></td><td><t data-ua="внутрішній діаметр" data-ru="внутренний диаметр">внутрішній діаметр</t></td><td class="unit"><t data-ua="мм" data-ru="мм">мм</t></td></tr><tr><td class="sym"><span class="m">n·d<sub>б</sub></span></td><td><t data-ua="болтові отвори (у відхід)" data-ru="болтовые отверстия (в отход)">болтові отвори (у відхід)</t></td><td class="unit"><t data-ua="шт·мм" data-ru="шт·мм">шт·мм</t></td></tr></table>
+    </div>
+  </div>
+</section><section class="slide">
+  <div class="rail"><span>CID 215</span></div>
+  <div class="head">
+    <div class="hgroup"><span class="code">CID 215</span><h2><t data-ua="Фланець круглий болтовий · перевірка" data-ru="Фланец круглый болтовой · проверка">Фланець круглий болтовий · перевірка</t></h2></div>
+    <span class="chip k-a"><i class="dot"></i><t data-ua="Підтверджено еталоном" data-ru="Подтверждено эталоном">Підтверджено еталоном</t></span>
+  </div>
+  <div class="proof"><div class="ex"><b class="exn"><t data-ua="Приклад 1" data-ru="Пример 1">Приклад 1</t></b><span class="m">D=160</span>, <span class="m">d=103</span>, <span class="m">3×⌀10</span> → <span class="m">S=0.011774</span> → <t data-ua="еталон" data-ru="эталон">еталон</t> <span class="m">0.011772</span> → <t data-ua="розбіжність" data-ru="расхождение">розбіжність</t> <span class="dev"><span class="m">0.0162%</span></span> <t data-ua="(Work 76090)" data-ru="(Work 76090)">(Work 76090)</t>.</div><div class="ex"><b class="exn"><t data-ua="Приклад 2" data-ru="Пример 2">Приклад 2</t></b><span class="m">D=220</span>, <span class="m">d=163</span>, <span class="m">4×⌀10</span> → <span class="m">S=0.017146</span> → <t data-ua="еталон" data-ru="эталон">еталон</t> <span class="m">0.017143</span> → <t data-ua="розбіжність" data-ru="расхождение">розбіжність</t> <span class="dev"><span class="m">0.0177%</span></span> <t data-ua="(Work 76090)" data-ru="(Work 76090)">(Work 76090)</t>.</div></div>
+  <p class="note"><t data-ua="Числа отримані прогоном реального коду (presentationAreas.mjs). Еталон — контрольна розгортка CAMduct того ж чистового шару." data-ru="Числа получены прогоном реального кода (presentationAreas.mjs). Эталон — контрольная развёртка CAMduct того же чистового слоя.">Числа отримані прогоном реального коду (presentationAreas.mjs). Еталон — контрольна розгортка CAMduct того ж чистового шару.</t></p>
+</section><section class="slide">
+  <div class="rail"><span>CID 78</span></div>
+  <div class="head">
+    <div class="hgroup"><span class="code">CID 78</span><h2><t data-ua="Дросель круглий" data-ru="Дроссель круглый">Дросель круглий</t></h2></div>
+    <span class="chip k-a"><i class="dot"></i><t data-ua="Підтверджено еталоном" data-ru="Подтверждено эталоном">Підтверджено еталоном</t></span>
+  </div>
+  <div class="cols">
+    <div class="left">
+      <div class="render nofoto"></div>
+      <h3><t data-ua="Геометрія" data-ru="Геометрия">Геометрія</t></h3>
+      <ol class="steps"><li><t data-ua="Корпус дроселя — обичайка (циліндр) з двома отворами під вісь заслінки." data-ru="Корпус дросселя — обечайка (цилиндр) с двумя отверстиями под ось заслонки.">Корпус дроселя — обичайка (циліндр) з двома отворами під вісь заслінки.</t></li><li><t data-ua="Розгортка обичайки — прямокутник πD × L." data-ru="Развёртка обечайки — прямоугольник πD × L.">Розгортка обичайки — прямокутник πD × L.</t></li><li><t data-ua="Два отвори під вісь вирізаються; сама заслінка — окрема деталь." data-ru="Два отверстия под ось вырезаются; сама заслонка — отдельная деталь.">Два отвори під вісь вирізаються; сама заслінка — окрема деталь.</t></li></ol>
+    </div>
+    <div class="right">
+      <h3><t data-ua="Формула" data-ru="Формула">Формула</t></h3>
+      <div class="formula"><div class="frm"><span class="m">S=(π D L − 2·π d<sub>ш</sub><sup>2</sup>/4)/10<sup>6</sup></span></div></div>
+      <h3><t data-ua="Позначення" data-ru="Обозначения">Позначення</t></h3>
+      <table class="leg"><tr><td class="sym"><span class="m">D</span></td><td><t data-ua="діаметр корпусу" data-ru="диаметр корпуса">діаметр корпусу</t></td><td class="unit"><t data-ua="мм" data-ru="мм">мм</t></td></tr><tr><td class="sym"><span class="m">L</span></td><td><t data-ua="довжина корпусу" data-ru="длина корпуса">довжина корпусу</t></td><td class="unit"><t data-ua="мм" data-ru="мм">мм</t></td></tr><tr><td class="sym"><span class="m">d<sub>ш</sub></span></td><td><t data-ua="діаметр отвору під вісь" data-ru="диаметр отверстия под ось">діаметр отвору під вісь</t></td><td class="unit"><t data-ua="мм" data-ru="мм">мм</t></td></tr></table>
+    </div>
+  </div>
+</section><section class="slide">
+  <div class="rail"><span>CID 78</span></div>
+  <div class="head">
+    <div class="hgroup"><span class="code">CID 78</span><h2><t data-ua="Дросель круглий · перевірка" data-ru="Дроссель круглый · проверка">Дросель круглий · перевірка</t></h2></div>
+    <span class="chip k-a"><i class="dot"></i><t data-ua="Підтверджено еталоном" data-ru="Подтверждено эталоном">Підтверджено еталоном</t></span>
+  </div>
+  <div class="proof"><div class="ex"><b class="exn"><t data-ua="Приклад 1" data-ru="Пример 1">Приклад 1</t></b><span class="m">D=398</span>, <span class="m">L=250</span>, <span class="m">d<sub>ш</sub>=13</span> → <span class="m">S=0.312323</span> → <t data-ua="еталон" data-ru="эталон">еталон</t> <span class="m">0.312323</span> → <t data-ua="розбіжність" data-ru="расхождение">розбіжність</t> <span class="dev"><span class="m">0.0000%</span></span> <t data-ua="(Work MAJ)" data-ru="(Work MAJ)">(Work MAJ)</t>.</div><div class="ex"><b class="exn"><t data-ua="Приклад 2" data-ru="Пример 2">Приклад 2</t></b><span class="m">D=100.5</span>, <span class="m">L=200</span>, <span class="m">d<sub>ш</sub>=13</span> → <span class="m">S=0.062881</span> → <t data-ua="еталон" data-ru="эталон">еталон</t> <span class="m">0.062881</span> → <t data-ua="розбіжність" data-ru="расхождение">розбіжність</t> <span class="dev"><span class="m">0.0000%</span></span> <t data-ua="(Work MAJ)" data-ru="(Work MAJ)">(Work MAJ)</t>.</div></div>
+  <p class="note"><t data-ua="Числа отримані прогоном реального коду (presentationAreas.mjs). Еталон — контрольна розгортка CAMduct того ж чистового шару." data-ru="Числа получены прогоном реального кода (presentationAreas.mjs). Эталон — контрольная развёртка CAMduct того же чистового слоя.">Числа отримані прогоном реального коду (presentationAreas.mjs). Еталон — контрольна розгортка CAMduct того ж чистового шару.</t></p>
+</section><section class="slide">
+  <div class="rail"><span>CID 64</span></div>
+  <div class="head">
+    <div class="hgroup"><span class="code">CID 64</span><h2><t data-ua="Прямокутна гілка на круглій магістралі" data-ru="Прямоугольная ветвь на круглой магистрали">Прямокутна гілка на круглій магістралі</t></h2></div>
+    <span class="chip k-a"><i class="dot"></i><t data-ua="Підтверджено еталоном" data-ru="Подтверждено эталоном">Підтверджено еталоном</t></span>
+  </div>
+  <div class="cols">
+    <div class="left">
+      <div class="render nofoto"></div>
+      <h3><t data-ua="Геометрія" data-ru="Геометрия">Геометрія</t></h3>
+      <ol class="steps"><li><t data-ua="Прямокутна гілка (сідло) сідає на циліндричну магістраль R=D/2." data-ru="Прямоугольная ветвь (седло) садится на цилиндрическую магистраль R=D/2.">Прямокутна гілка (сідло) сідає на циліндричну магістраль R=D/2.</t></li><li><t data-ua="Дві стінки вздовж осі стоять на постійній просадці δ=R−√(R²−B²/4); дві стінки поперек ідуть по дузі падіння (точний інтеграл)." data-ru="Две стенки вдоль оси стоят на постоянной просадке δ=R−√(R²−B²/4); две стенки поперёк идут по дуге падения (точный интеграл).">Дві стінки вздовж осі стоять на постійній просадці δ=R−√(R²−B²/4); дві стінки поперек ідуть по дузі падіння (точний інтеграл).</t></li><li><t data-ua="Площа = тіло магістралі πDL + сідло; метал вирізу в стволі йде у відхід." data-ru="Площадь = тело магистрали πDL + седло; металл выреза в стволе уходит в отход.">Площа = тіло магістралі πDL + сідло; метал вирізу в стволі йде у відхід.</t></li></ol>
+    </div>
+    <div class="right">
+      <h3><t data-ua="Формула" data-ru="Формула">Формула</t></h3>
+      <div class="formula"><div class="frm"><span class="m">S=(π D L + S<sub>сідло</sub>)/10<sup>6</sup></span></div><div class="frm"><span class="m">S<sub>сідло</sub>=2A(h+δ) + 2[Bh + BR − (½B√(R<sup>2</sup>−¼B<sup>2</sup>)+R<sup>2</sup>·asin(B/2R))]</span></div><div class="frm"><span class="m">δ=R−√(R<sup>2</sup>−¼B<sup>2</sup>),  R=D/2</span></div></div>
+      <h3><t data-ua="Позначення" data-ru="Обозначения">Позначення</t></h3>
+      <table class="leg"><tr><td class="sym"><span class="m">D</span></td><td><t data-ua="діаметр магістралі" data-ru="диаметр магистрали">діаметр магістралі</t></td><td class="unit"><t data-ua="мм" data-ru="мм">мм</t></td></tr><tr><td class="sym"><span class="m">L</span></td><td><t data-ua="довжина магістралі" data-ru="длина магистрали">довжина магістралі</t></td><td class="unit"><t data-ua="мм" data-ru="мм">мм</t></td></tr><tr><td class="sym"><span class="m">A</span></td><td><t data-ua="сторона гілки вздовж осі" data-ru="сторона ветви вдоль оси">сторона гілки вздовж осі</t></td><td class="unit"><t data-ua="мм" data-ru="мм">мм</t></td></tr><tr><td class="sym"><span class="m">B</span></td><td><t data-ua="сторона гілки поперек осі" data-ru="сторона ветви поперёк оси">сторона гілки поперек осі</t></td><td class="unit"><t data-ua="мм" data-ru="мм">мм</t></td></tr><tr><td class="sym"><span class="m">h</span></td><td><t data-ua="висота гілки від піку сідла" data-ru="высота ветви от пика седла">висота гілки від піку сідла</t></td><td class="unit"><t data-ua="мм" data-ru="мм">мм</t></td></tr></table>
+    </div>
+  </div>
+</section><section class="slide">
+  <div class="rail"><span>CID 64</span></div>
+  <div class="head">
+    <div class="hgroup"><span class="code">CID 64</span><h2><t data-ua="Прямокутна гілка на круглій магістралі · перевірка" data-ru="Прямоугольная ветвь на круглой магистрали · проверка">Прямокутна гілка на круглій магістралі · перевірка</t></h2></div>
+    <span class="chip k-a"><i class="dot"></i><t data-ua="Підтверджено еталоном" data-ru="Подтверждено эталоном">Підтверджено еталоном</t></span>
+  </div>
+  <div class="proof"><div class="ex"><b class="exn"><t data-ua="Приклад 1" data-ru="Пример 1">Приклад 1</t></b><span class="m">D=497</span>, <span class="m">L=530</span>, <span class="m">гілка 200×200</span>, <span class="m">h=100</span> → <span class="m">S=0.918682</span> → <t data-ua="еталон" data-ru="эталон">еталон</t> <span class="m">0.918685</span> → <t data-ua="розбіжність" data-ru="расхождение">розбіжність</t> <span class="dev"><span class="m">0.0003%</span></span> <t data-ua="(Work −588)" data-ru="(Work −588)">(Work −588)</t>.</div><div class="ex"><b class="exn"><t data-ua="Приклад 2" data-ru="Пример 2">Приклад 2</t></b><span class="m">D=148</span>, <span class="m">L=405</span>, <span class="m">гілка 205×105</span>, <span class="m">h=100</span> → <span class="m">S=0.260691</span> → <t data-ua="еталон" data-ru="эталон">еталон</t> <span class="m">0.260692</span> → <t data-ua="розбіжність" data-ru="расхождение">розбіжність</t> <span class="dev"><span class="m">0.0004%</span></span> <t data-ua="(Work 66714)" data-ru="(Work 66714)">(Work 66714)</t>.</div></div>
+  <p class="note"><t data-ua="Числа отримані прогоном реального коду (presentationAreas.mjs). Еталон — контрольна розгортка CAMduct того ж чистового шару." data-ru="Числа получены прогоном реального кода (presentationAreas.mjs). Эталон — контрольная развёртка CAMduct того же чистового слоя.">Числа отримані прогоном реального коду (presentationAreas.mjs). Еталон — контрольна розгортка CAMduct того ж чистового шару.</t></p>
+</section><section class="slide">
+  <div class="rail"><span>CID 399</span></div>
+  <div class="head">
+    <div class="hgroup"><span class="code">CID 399</span><h2><t data-ua="Відвід прямокутний Drop Cheek" data-ru="Отвод прямоугольный Drop Cheek">Відвід прямокутний Drop Cheek</t></h2></div>
+    <span class="chip k-a"><i class="dot"></i><t data-ua="Підтверджено еталоном" data-ru="Подтверждено эталоном">Підтверджено еталоном</t></span>
+  </div>
+  <div class="cols">
+    <div class="left">
+      <div class="render nofoto"></div>
+      <h3><t data-ua="Геометрія" data-ru="Геометрия">Геометрія</t></h3>
+      <ol class="steps"><li><t data-ua="Прямокутний відвід 90°, у якого вхід A×B «падає» на вихід C×D — щоки різної висоти." data-ru="Прямоугольный отвод 90°, у которого вход A×B «падает» на выход C×D — щёки разной высоты.">Прямокутний відвід 90°, у якого вхід A×B «падає» на вихід C×D — щоки різної висоти.</t></li><li><t data-ua="Розгортка = 2 щоки (плоский сектор + падіння Δ=|A−C|) + горло + затилок." data-ru="Развёртка = 2 щеки (плоский сектор + падение Δ=|A−C|) + горло + затылок.">Розгортка = 2 щоки (плоский сектор + падіння Δ=|A−C|) + горло + затилок.</t></li><li><t data-ua="Ширини смуг горла і затилка усереднюються, довжини — по внутрішньому і зовнішньому краю." data-ru="Ширины полос горла и затылка усредняются, длины — по внутреннему и внешнему краю.">Ширини смуг горла і затилка усереднюються, довжини — по внутрішньому і зовнішньому краю.</t></li></ol>
+    </div>
+    <div class="right">
+      <h3><t data-ua="Формула" data-ru="Формула">Формула</t></h3>
+      <div class="formula"><div class="frm"><span class="m">S=(2S<sub>щ</sub> + S<sub>горло</sub> + S<sub>затил</sub>)/10<sup>6</sup></span></div><div class="frm"><span class="m">S<sub>щ</sub>=C·F + A·G + ½φ((R+c)<sup>2</sup>−R<sup>2</sup>) + Δ(R+c),  c=min(A,C)</span></div><div class="frm"><span class="m">S<sub>горло</sub>=½(B+D)(F+G+Rφ);  S<sub>затил</sub>=½(B+D)(F+G+(R+c)φ+Δ)</span></div></div>
+      <h3><t data-ua="Позначення" data-ru="Обозначения">Позначення</t></h3>
+      <table class="leg"><tr><td class="sym"><span class="m">A×B</span></td><td><t data-ua="переріз входу" data-ru="сечение входа">переріз входу</t></td><td class="unit"><t data-ua="мм" data-ru="мм">мм</t></td></tr><tr><td class="sym"><span class="m">C×D</span></td><td><t data-ua="переріз виходу" data-ru="сечение выхода">переріз виходу</t></td><td class="unit"><t data-ua="мм" data-ru="мм">мм</t></td></tr><tr><td class="sym"><span class="m">φ</span></td><td><t data-ua="кут відводу (рад)" data-ru="угол отвода (рад)">кут відводу (рад)</t></td><td class="unit"><t data-ua="рад" data-ru="рад">рад</t></td></tr><tr><td class="sym"><span class="m">F, G</span></td><td><t data-ua="прямі ділянки" data-ru="прямые участки">прямі ділянки</t></td><td class="unit"><t data-ua="мм" data-ru="мм">мм</t></td></tr><tr><td class="sym"><span class="m">R</span></td><td><t data-ua="внутрішній радіус" data-ru="внутренний радиус">внутрішній радіус</t></td><td class="unit"><t data-ua="мм" data-ru="мм">мм</t></td></tr></table>
+    </div>
+  </div>
+</section><section class="slide">
+  <div class="rail"><span>CID 399</span></div>
+  <div class="head">
+    <div class="hgroup"><span class="code">CID 399</span><h2><t data-ua="Відвід прямокутний Drop Cheek · перевірка" data-ru="Отвод прямоугольный Drop Cheek · проверка">Відвід прямокутний Drop Cheek · перевірка</t></h2></div>
+    <span class="chip k-a"><i class="dot"></i><t data-ua="Підтверджено еталоном" data-ru="Подтверждено эталоном">Підтверджено еталоном</t></span>
+  </div>
+  <div class="proof"><div class="ex"><b class="exn"><t data-ua="Приклад 1" data-ru="Пример 1">Приклад 1</t></b><span class="m">500×200 → 400×200</span>, <span class="m">90°</span>, <span class="m">F=G=50</span>, <span class="m">R=0</span> → <span class="m">S=0.606991</span> → <t data-ua="еталон" data-ru="эталон">еталон</t> <span class="m">0.607084</span> → <t data-ua="розбіжність" data-ru="расхождение">розбіжність</t> <span class="dev"><span class="m">0.0154%</span></span> <t data-ua="(Work MAJ)" data-ru="(Work MAJ)">(Work MAJ)</t>.</div><div class="ex"><b class="exn"><t data-ua="Приклад 2" data-ru="Пример 2">Приклад 2</t></b><span class="m">400×400 → 250×400</span>, <span class="m">90°</span>, <span class="m">F=50</span>, <span class="m">G=75</span>, <span class="m">R=0</span> → <span class="m">S=0.575254</span> → <t data-ua="еталон" data-ru="эталон">еталон</t> <span class="m">0.575289</span> → <t data-ua="розбіжність" data-ru="расхождение">розбіжність</t> <span class="dev"><span class="m">0.0061%</span></span> <t data-ua="(Work MAJ)" data-ru="(Work MAJ)">(Work MAJ)</t>.</div></div>
+  <p class="note"><t data-ua="Числа отримані прогоном реального коду (presentationAreas.mjs). Еталон — контрольна розгортка CAMduct того ж чистового шару." data-ru="Числа получены прогоном реального кода (presentationAreas.mjs). Эталон — контрольная развёртка CAMduct того же чистового слоя.">Числа отримані прогоном реального коду (presentationAreas.mjs). Еталон — контрольна розгортка CAMduct того ж чистового шару.</t></p>
+</section><section class="slide">
+  <div class="rail"><span>CID 382</span></div>
+  <div class="head">
+    <div class="hgroup"><span class="code">CID 382</span><h2><t data-ua="П-адаптер (channel adapter)" data-ru="П-адаптер (channel adapter)">П-адаптер (channel adapter)</t></h2></div>
+    <span class="chip k-a"><i class="dot"></i><t data-ua="Підтверджено еталоном" data-ru="Подтверждено эталоном">Підтверджено еталоном</t></span>
+  </div>
+  <div class="cols">
+    <div class="left">
+      <div class="render nofoto"></div>
+      <h3><t data-ua="Геометрія" data-ru="Геометрия">Геометрія</t></h3>
+      <ol class="steps"><li><t data-ua="П-подібна деталь: канал A×B з двома боковинами глибиною C." data-ru="П-образная деталь: канал A×B с двумя боковинами глубиной C.">П-подібна деталь: канал A×B з двома боковинами глибиною C.</t></li><li><t data-ua="Розгортка = дно A×B + дві бічні стінки A×C (разом A·(B+2C)) + дві торцеві боковини C×B." data-ru="Развёртка = дно A×B + две боковые стенки A×C (вместе A·(B+2C)) + две торцевые боковины C×B.">Розгортка = дно A×B + дві бічні стінки A×C (разом A·(B+2C)) + дві торцеві боковини C×B.</t></li><li><t data-ua="Отвір врізки d — у відхід, не вичитається." data-ru="Отверстие врезки d — в отход, не вычитается.">Отвір врізки d — у відхід, не вичитається.</t></li></ol>
+    </div>
+    <div class="right">
+      <h3><t data-ua="Формула" data-ru="Формула">Формула</t></h3>
+      <div class="formula"><div class="frm"><span class="m">S=[A·(B+2C) + 2·C·B]/10<sup>6</sup></span></div></div>
+      <h3><t data-ua="Позначення" data-ru="Обозначения">Позначення</t></h3>
+      <table class="leg"><tr><td class="sym"><span class="m">A</span></td><td><t data-ua="ширина каналу" data-ru="ширина канала">ширина каналу</t></td><td class="unit"><t data-ua="мм" data-ru="мм">мм</t></td></tr><tr><td class="sym"><span class="m">B</span></td><td><t data-ua="дно" data-ru="дно">дно</t></td><td class="unit"><t data-ua="мм" data-ru="мм">мм</t></td></tr><tr><td class="sym"><span class="m">C</span></td><td><t data-ua="глибина боковин" data-ru="глубина боковин">глибина боковин</t></td><td class="unit"><t data-ua="мм" data-ru="мм">мм</t></td></tr><tr><td class="sym"><span class="m">d</span></td><td><t data-ua="отвір врізки (у відхід)" data-ru="отверстие врезки (в отход)">отвір врізки (у відхід)</t></td><td class="unit"><t data-ua="мм" data-ru="мм">мм</t></td></tr></table>
+    </div>
+  </div>
+</section><section class="slide">
+  <div class="rail"><span>CID 382</span></div>
+  <div class="head">
+    <div class="hgroup"><span class="code">CID 382</span><h2><t data-ua="П-адаптер (channel adapter) · перевірка" data-ru="П-адаптер (channel adapter) · проверка">П-адаптер (channel adapter) · перевірка</t></h2></div>
+    <span class="chip k-a"><i class="dot"></i><t data-ua="Підтверджено еталоном" data-ru="Подтверждено эталоном">Підтверджено еталоном</t></span>
+  </div>
+  <div class="proof"><div class="ex"><b class="exn"><t data-ua="Приклад 1" data-ru="Пример 1">Приклад 1</t></b><span class="m">A=600</span>, <span class="m">B=400</span>, <span class="m">C=300</span> → <span class="m">S=0.840000</span> → <t data-ua="еталон" data-ru="эталон">еталон</t> <span class="m">0.840000</span> → <t data-ua="розбіжність" data-ru="расхождение">розбіжність</t> <span class="dev"><span class="m">0.0000%</span></span> <t data-ua="(еталон poz5)" data-ru="(еталон poz5)">(еталон poz5)</t>.</div><div class="ex"><b class="exn"><t data-ua="Приклад 2" data-ru="Пример 2">Приклад 2</t></b><span class="m">A=400</span>, <span class="m">B=300</span>, <span class="m">C=200</span> → <span class="m">S=0.400000</span> → <t data-ua="масовий контроль" data-ru="массовый контроль">масовий контроль</t> <span class="m">медіана 0.0000%</span> <t data-ua="(Work 726/727)" data-ru="(Work 726/727)">(Work 726/727)</t>.</div></div>
+  <p class="note"><t data-ua="Числа отримані прогоном реального коду (presentationAreas.mjs). Еталон — контрольна розгортка CAMduct того ж чистового шару." data-ru="Числа получены прогоном реального кода (presentationAreas.mjs). Эталон — контрольная развёртка CAMduct того же чистового слоя.">Числа отримані прогоном реального коду (presentationAreas.mjs). Еталон — контрольна розгортка CAMduct того ж чистового шару.</t></p>
+</section><section class="slide">
+  <div class="rail"><span>CID 9</span></div>
+  <div class="head">
+    <div class="hgroup"><span class="code">CID 9</span><h2><t data-ua="Утка прямокутна" data-ru="Утка прямоугольная">Утка прямокутна</t></h2></div>
+    <span class="chip k-a"><i class="dot"></i><t data-ua="Підтверджено еталоном" data-ru="Подтверждено эталоном">Підтверджено еталоном</t></span>
+  </div>
+  <div class="cols">
+    <div class="left">
+      <div class="render nofoto"></div>
+      <h3><t data-ua="Геометрія" data-ru="Геометрия">Геометрія</t></h3>
+      <ol class="steps"><li><t data-ua="Прямокутна утка зі зміщенням: дві плоскі щоки шириною A і дві гнуті смуги шириною B." data-ru="Прямоугольная утка со смещением: две плоские щеки шириной A и две гнутые полосы шириной B.">Прямокутна утка зі зміщенням: дві плоскі щоки шириною A і дві гнуті смуги шириною B.</t></li><li><t data-ua="Осьова довжина розгортки L = прямі F+G + дуга радіуса C + дотична t." data-ru="Осевая длина развёртки L = прямые F+G + дуга радиуса C + касательная t.">Осьова довжина розгортки L = прямі F+G + дуга радіуса C + дотична t.</t></li><li><t data-ua="Площа = 2 щоки + 2 смуги = 2(A+B)·L." data-ru="Площадь = 2 щеки + 2 полосы = 2(A+B)·L.">Площа = 2 щоки + 2 смуги = 2(A+B)·L.</t></li></ol>
+    </div>
+    <div class="right">
+      <h3><t data-ua="Формула" data-ru="Формула">Формула</t></h3>
+      <div class="formula"><div class="frm"><span class="m">S=2(A+B)·L/10<sup>6</sup></span></div><div class="frm"><span class="m">L=F+G+C·φ+t,  t=√(m<sup>2</sup>−C<sup>2</sup>),  m=√((E−F−G)<sup>2</sup>+(H−C)<sup>2</sup>)</span></div></div>
+      <h3><t data-ua="Позначення" data-ru="Обозначения">Позначення</t></h3>
+      <table class="leg"><tr><td class="sym"><span class="m">A</span></td><td><t data-ua="ширина щоки" data-ru="ширина щеки">ширина щоки</t></td><td class="unit"><t data-ua="мм" data-ru="мм">мм</t></td></tr><tr><td class="sym"><span class="m">B</span></td><td><t data-ua="ширина смуги" data-ru="ширина полосы">ширина смуги</t></td><td class="unit"><t data-ua="мм" data-ru="мм">мм</t></td></tr><tr><td class="sym"><span class="m">C</span></td><td><t data-ua="радіус згину" data-ru="радиус изгиба">радіус згину</t></td><td class="unit"><t data-ua="мм" data-ru="мм">мм</t></td></tr><tr><td class="sym"><span class="m">E</span></td><td><t data-ua="осьова довжина" data-ru="осевая длина">осьова довжина</t></td><td class="unit"><t data-ua="мм" data-ru="мм">мм</t></td></tr><tr><td class="sym"><span class="m">F, G</span></td><td><t data-ua="прямі ділянки" data-ru="прямые участки">прямі ділянки</t></td><td class="unit"><t data-ua="мм" data-ru="мм">мм</t></td></tr><tr><td class="sym"><span class="m">H</span></td><td><t data-ua="зміщення осей" data-ru="смещение осей">зміщення осей</t></td><td class="unit"><t data-ua="мм" data-ru="мм">мм</t></td></tr></table>
+    </div>
+  </div>
+</section><section class="slide">
+  <div class="rail"><span>CID 9</span></div>
+  <div class="head">
+    <div class="hgroup"><span class="code">CID 9</span><h2><t data-ua="Утка прямокутна · перевірка" data-ru="Утка прямоугольная · проверка">Утка прямокутна · перевірка</t></h2></div>
+    <span class="chip k-a"><i class="dot"></i><t data-ua="Підтверджено еталоном" data-ru="Подтверждено эталоном">Підтверджено еталоном</t></span>
+  </div>
+  <div class="proof"><div class="ex"><b class="exn"><t data-ua="Приклад 1" data-ru="Пример 1">Приклад 1</t></b><span class="m">A=150</span>, <span class="m">B=200</span>, <span class="m">C=150</span>, <span class="m">E=250</span>, <span class="m">H=110</span> → <span class="m">S=0.192696</span> → <t data-ua="еталон" data-ru="эталон">еталон</t> <span class="m">0.192696</span> → <t data-ua="розбіжність" data-ru="расхождение">розбіжність</t> <span class="dev"><span class="m">0.0001%</span></span> <t data-ua="(Work 66456)" data-ru="(Work 66456)">(Work 66456)</t>.</div><div class="ex"><b class="exn"><t data-ua="Приклад 2" data-ru="Пример 2">Приклад 2</t></b><span class="m">A=700</span>, <span class="m">B=400</span>, <span class="m">C=700</span>, <span class="m">E=900</span>, <span class="m">H=965</span> → <span class="m">S=3.193362</span> → <t data-ua="еталон" data-ru="эталон">еталон</t> <span class="m">3.193362</span> → <t data-ua="розбіжність" data-ru="расхождение">розбіжність</t> <span class="dev"><span class="m">0.0000%</span></span> <t data-ua="(Work 84400)" data-ru="(Work 84400)">(Work 84400)</t>.</div></div>
+  <p class="note"><t data-ua="Числа отримані прогоном реального коду (presentationAreas.mjs). Еталон — контрольна розгортка CAMduct того ж чистового шару." data-ru="Числа получены прогоном реального кода (presentationAreas.mjs). Эталон — контрольная развёртка CAMduct того же чистового слоя.">Числа отримані прогоном реального коду (presentationAreas.mjs). Еталон — контрольна розгортка CAMduct того ж чистового шару.</t></p>
 </section><section class="slide">
   <div class="rail"><span>далі</span></div>
   <div class="head"><h2>Що далі</h2></div>
